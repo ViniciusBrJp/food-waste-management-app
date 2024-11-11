@@ -1,4 +1,4 @@
-package semnet;
+package mfl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,16 +14,16 @@ public class Database {
     public static void initializeDatabase() {
 		try {
 		    // データベースへの接続を作成
-		    connection = DriverManager.getConnection("jdbc:h2:./data/semnetdb");
+		    connection = DriverManager.getConnection("jdbc:sqlite:./data/mfldb.db");
 	
 	
 		    // linksテーブルの作成
 		    Statement stmt = connection.createStatement();
-		    stmt.execute("CREATE TABLE IF NOT EXISTS links (" +
-				           "id INT AUTO_INCREMENT PRIMARY KEY, " +
-				           "label VARCHAR(255), " +
-				           "tail VARCHAR(255), " +
-				           "head VARCHAR(255))");
+		    stmt.execute("CREATE TABLE IF NOT EXISTS ingredients (" +
+				           "id INTEGER PRIMARY KEY, " +
+				           "name VARCHAR(255), " +
+				           "pdate VARCHAR(255), " +
+				           "edate VARCHAR(255))");
 		} catch (SQLException e) {
 		    e.printStackTrace();
 		}
