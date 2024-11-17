@@ -14,7 +14,7 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 /**
  * SemNetAppクラス
  */
-public class ManageFoodLossApp {
+public class FoodWasteManagementApp {
     public static void main(String[] args) {
         // H2データベースの初期化
         Database.initializeDatabase();
@@ -35,16 +35,16 @@ public class ManageFoodLossApp {
         // Javalinアプリの作成
         Javalin app = Javalin.create().start(50083);
 
-        app.get("/mfl", ctx -> {
+        app.get("/fwm", ctx -> {
             Map<String, Object> model = new HashMap<>();
-            MFL mfl = new MFL();
-            if (mfl.isEmpty()) {
-                mfl.addInitialIngs();
+            FWM fwm = new FWM();
+            if (fwm.isEmpty()) {
+                fwm.addInitialIngs();
             }
             
-            model.put("mfl", mfl);
+            model.put("fwm", fwm);
             
-            ctx.render("/mfl.html", model);
+            ctx.render("/fwm.html", model);
         });
     }
 }

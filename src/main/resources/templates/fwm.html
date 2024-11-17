@@ -53,7 +53,7 @@
 	  </tr>
 	</thead>
 	<tbody>
-	  <tr th:each="ing : ${mfl.getIngs()}">
+	  <tr th:each="ing : ${fwm.getIngs()}">
 	    <td th:text="${ing.getName()}"></td>
 	    <td th:text="${ing.getPdate()}"></td>
 	    <td th:text="${ing.getEdate()}"></td>
@@ -72,7 +72,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<tr th:each="ing : ${mfl.getExpiringIngs(2)}">
+	<tr th:each="ing : ${fwm.getExpiringIngs(2)}">
 		<td th:text="${ing.getName()}"></td>
 		<td th:text="${ing.getPdate()}"></td>
 		<td th:text="${ing.getEdate()}"></td>
@@ -82,7 +82,7 @@
 
 	<!--
       <h3>質問（Query）</h3>
-      <form action="/mfl" method="post">
+      <form action="/fwm" method="post">
 	<div class="form-group">
 	  <textarea class="form-control" name="queryStr" rows="4" th:text="${query}"></textarea>
 	</div>

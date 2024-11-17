@@ -16,9 +16,9 @@ import java.time.format.DateTimeFormatter;
 /***
  * ManegeFoodLossクラス
  */
-public class MFL {
+public class FWM {
 
-    public MFL() {}
+    public FWM() {}
     
     //Ingredient追加
     public void addIng(Ingredient ing) {
