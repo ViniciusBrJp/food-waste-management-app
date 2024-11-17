@@ -4,36 +4,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /***
  * ManegeFoodLossクラス
  */
 public class MFL {
-	
-    private ArrayList<Ingredient> ing_list;  // Ingredientのリスト
-    private HashMap<String, Ingredient> ingsNameTable;  // ingredient名で検索できるテーブル
 
-    public MFL() {
-        ing_list = new ArrayList<>();
-        ingsNameTable = new HashMap<>();
-    }
-
-    // 食品リストと食品名テーブルを返すためのメソッド
-    public ArrayList<Ingredient> getInglist() {
-        return ing_list;
-    }
-
-    public HashMap<String, Ingredient> getIngsNameTable() {
-        return ingsNameTable;
-    }
-
+    public MFL() {}
+    
+    //Ingredient追加
     public void addIng(Ingredient ing) {
         try {
+        	
             Connection conn = Database.getConnection();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO ingredients (name, pdate, edate) VALUES (?, ?, ?)");
             ps.setString(1, ing.getName());
@@ -45,7 +35,8 @@ public class MFL {
             e.printStackTrace();
         }
     }
-
+    
+    //全データ取得
     public List<Ingredient> getIngs() {
         List<Ingredient> ings = new ArrayList<>();
         try {
@@ -78,10 +69,36 @@ public class MFL {
         }
         return true;
     }
-
+    
+    //初期データ追加
     public void addInitialIngs() {
-        addIng(new Ingredient("Apple", "2024-11-11", "2024-11-20"));
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	
+        addIng(new Ingredient("人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter)));
+        addIng(new Ingredient("大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter)));
+        addIng(new Ingredient("ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter)));
     }
+    
+    //賞味期限の近い食材を取得
+	public List<Ingredient> getExpiringIngs(int days) {
+        List<Ingredient> ings = new ArrayList<>();
+        try {
+            Connection conn = Database.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT name, pdate, edate FROM ingredients" +
+            										     " WHERE julianday(edate) - julianday('now') <= " + days);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String pdate = rs.getString("pdate");
+                String edate = rs.getString("edate");
+                ings.add(new Ingredient(name, pdate, edate));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return ings;
+	}
     
     /*
     public String query(ArrayList<Ingredient> queries) {

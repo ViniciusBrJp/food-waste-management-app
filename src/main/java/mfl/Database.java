@@ -17,9 +17,12 @@ public class Database {
 		    connection = DriverManager.getConnection("jdbc:sqlite:./data/mfldb.db");
 	
 	
-		    // linksテーブルの作成
+		    // ingredientsテーブルの作成
 		    Statement stmt = connection.createStatement();
-		    stmt.execute("CREATE TABLE IF NOT EXISTS ingredients (" +
+		    
+		    stmt.execute("DROP TABLE IF EXISTS ingredients");
+		    
+		    stmt.execute(  "CREATE TABLE IF NOT EXISTS ingredients (" +
 				           "id INTEGER PRIMARY KEY, " +
 				           "name VARCHAR(255), " +
 				           "pdate VARCHAR(255), " +

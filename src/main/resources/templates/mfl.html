@@ -42,7 +42,7 @@
 		
 	</header>
 
-	<h1>食品ロス管理アプリ</h1>
+	<h1>食材一覧</h1>
     <div class="container">
       <table class="table table-bordered">
 	<thead class="thead-dark">
@@ -60,6 +60,26 @@
 	  </tr>
 	</tbody>
       </table>
+
+	<h1>賞味期限の近い食材一覧</h1>
+	<div class="container">
+	<table class="table table-bordered">
+	<thead class="thead-dark">
+	<tr>
+		<th>Name<br/>(商品名)</th>
+		<th>Pdate<br/>(購入日)</th>
+		<th>Edate<br/>(賞味期限)</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr th:each="ing : ${mfl.getExpiringIngs(2)}">
+		<td th:text="${ing.getName()}"></td>
+		<td th:text="${ing.getPdate()}"></td>
+		<td th:text="${ing.getEdate()}"></td>
+	</tr>
+	</tbody>
+	</table>  
+
 	<!--
       <h3>質問（Query）</h3>
       <form action="/mfl" method="post">
