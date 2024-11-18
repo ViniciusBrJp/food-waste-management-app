@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品登録画面</title>
+    <!-- ここでCSSファイルを参照 -->
+    <link rel="stylesheet" href="../styles/product_reg.css">
+</head>
+<body>
+    <!--HTML要素にクラスを適用することで、CSSを使用してその要素に特定のスタイルを適用できる-->
+    <!--各クラスの定義は参照するCSSファイルに書き込む-->
+    <!--header要素はページのヘッダー部分を定義する-->
+    <header class="header">
+        <div class="container">
+            <ul class="nav">
+                <li>
+                    <a href="top_page_index.html"> <!-- トップページへのリンク -->
+                        <img src="../apple_log.png" alt="Logo" class="logo"> <!-- 一つ上の階層から画像を読み込む -->
+                    </a>
+                </li>
+                <!--複数のクラス名をスペースで区切って指定することで要素に複数のクラスを適用できる-->
+                <li class="header-hover-color"><a href="homepage.html">ホーム</a></li>
+                <li class="header-hover-color active"><a href="product_reg.html">商品登録</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1>商品登録</h1>
+        <div class="form-layout">
+            <!-- 左側の画像プレビュー -->
+            <div class="image-container">
+                 <span>画像</span>
+                <img src="../apple_log.png" alt="Logo" class="logo">
+            </div>
+            <!-- 右側の入力フィールド -->
+            <div class="form-fields">
+                <!--form要素は商品登録のための入力フォームを定義-->
+                <!--フォームの動作を定義するためには<form>要素にaction属性とmethod属性を追加する必要がある-->
+                <!--action属性にはフォームデータを送信するURLを指定-->
+                <!--method属性にはフォームデータを送信するHTTPメソッドを指定　GETまたはPOSTが多い-->
+                <form>
+                    <div class="form-group">
+                        <!--label要素はフォーム内の入力フィールドに関連付けられたラベルを定義するために使用される-->
+                        <!--for属性は対応する入力フィールドのidを指定-->
+                        <label for="product-name">商品名</label>
+                        <!--input要素はユーザがデータを入力するためのインタラクティブなコントロールを提供する-->
+                        <!--idは、label要素のfor属性と関連付けされている-->
+                        <!--nameはフォームデータをサーバーに送信する際のキーとして使用される-->
+                        <input type="text" id="product-name" name="product-name" placeholder="商品名を入力">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">価格</label>
+                        <input type="number" id="price" name="price" placeholder="価格を入力">
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase-date">購入日</label>
+                        <input type="date" id="purchase-date" name="purchase-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry-date">期限</label>
+                        <input type="date" id="expiry-date" name="expiry-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="hr-select">カテゴリー</label>
+                        <select name="foods" id="hr-select">
+                            <option value="">カテゴリーを入力</option>
+                            <hr />
+                            <optgroup label="カテゴリー">
+                                <option value="a">穀類</option>
+                                <option value="b">いも及びでん粉類</option>
+                                <option value="c">砂糖及び甘味類</option>
+                                <option value="d">豆類</option>
+                                <option value="e">種実類</option>
+                                <option value="f">野菜類</option>
+                                <option value="g">きのこ類</option>
+                                <option value="h">藻類</option>
+                                <option value="i">魚介類</option>
+                                <option value="j">肉類</option>
+                                <option value="k">卵類</option>
+                                <option value="m">乳類</option>
+                                <option value="l">油脂類</option>
+                                <option value="n">菓子類</option>
+                                <option value="o">嗜好飲料類</option>
+                                <option value="p">調味料及び香辛料</option>
+                                <option value="q">調理加工食品類</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">登録</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--<script>部分はJavaScriptコードを含んでおり、ページが読み込まれて実行されるスクリプトを定義-->
+    <script>
+        
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
