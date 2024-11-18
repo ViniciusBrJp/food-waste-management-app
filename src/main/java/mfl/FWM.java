@@ -72,7 +72,7 @@ public class FWM {
     
     //初期データ追加
     public void addInitialIngs() {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     	
         addIng(new Ingredient("人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter)));
         addIng(new Ingredient("大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter)));
@@ -84,8 +84,11 @@ public class FWM {
         List<Ingredient> ings = new ArrayList<>();
         try {
             Connection conn = Database.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT name, pdate, edate FROM ingredients" +
-            										     " WHERE julianday(edate) - julianday('now') <= " + days);
+            PreparedStatement ps = conn.prepareStatement(
+            	    "SELECT name, pdate, edate FROM ingredients " +
+            	    "WHERE julianday(replace(edate, '/', '-')) - julianday('now') <= ?"
+            	);
+            ps.setInt(1, days);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("name");

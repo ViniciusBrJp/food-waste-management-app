@@ -34,10 +34,12 @@ public class FoodWasteManagementApp {
 
         // Javalinアプリの作成
         Javalin app = Javalin.create().start(50083);
+        
+        FWM fwm = new FWM();
 
         app.get("/fwm", ctx -> {
             Map<String, Object> model = new HashMap<>();
-            FWM fwm = new FWM();
+            
             if (fwm.isEmpty()) {
                 fwm.addInitialIngs();
             }
@@ -45,6 +47,21 @@ public class FoodWasteManagementApp {
             model.put("fwm", fwm);
             
             ctx.render("/fwm.html", model);
+        });
+        
+        app.get("/register", ctx -> {
+            ctx.render("/register.html");
+        });
+        
+        app.post("/submitRegistration", ctx -> {
+            // フォームから送信された値を取得
+            String name = ctx.formParam("name");   // 食材名
+            String pdate = ctx.formParam("pdate"); // 購入日
+            String edate = ctx.formParam("edate"); // 賞味期限
+            
+            fwm.addIng(new Ingredient(name, pdate, edate));
+            
+            ctx.redirect("/fwm");
         });
     }
 }
