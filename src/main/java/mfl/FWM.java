@@ -1,77 +1,64 @@
-package semnet;
+package mfl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /***
- * SemanticNetクラス
+ * ManegeFoodLossクラス
  */
-public class SemanticNet {
-	
-    private ArrayList<Node> nodes;  // Nodeのリスト
-    private HashMap<String, Node> nodesNameTable;  // Node名で検索できるテーブル
+public class FWM {
 
-    public SemanticNet() {
-        nodes = new ArrayList<>();
-        nodesNameTable = new HashMap<>();
-    }
-
-    // ノードリストとノード名テーブルを返すためのメソッド
-    public ArrayList<Node> getNodes() {
-        return nodes;
-    }
-
-    public HashMap<String, Node> getNodesNameTable() {
-        return nodesNameTable;
-    }
-
-    public void addLink(Link link) {
+    public FWM() {}
+    
+    //Ingredient追加
+    public void addIng(Ingredient ing) {
         try {
+        	
             Connection conn = Database.getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO links (label, tail, head) VALUES (?, ?, ?)");
-            ps.setString(1, link.getLabel());
-            ps.setString(2, link.getTail().getName());
-            ps.setString(3, link.getHead().getName());
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO ingredients (name, pdate, edate) VALUES (?, ?, ?)");
+            ps.setString(1, ing.getName());
+            ps.setString(2, ing.getPdate());
+            ps.setString(3, ing.getEdate());
             ps.executeUpdate();
-
-            // Nodeに出発・到着リンクを追加
-            link.getTail().addDepartFromMeLinks(link);
-            link.getHead().addArriveAtMeLinks(link);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    public List<Link> getLinks() {
-        List<Link> links = new ArrayList<>();
+    
+    //全データ取得
+    public List<Ingredient> getIngs() {
+        List<Ingredient> ings = new ArrayList<>();
         try {
             Connection conn = Database.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT label, tail, head FROM links");
+            PreparedStatement ps = conn.prepareStatement("SELECT name, pdate, edate FROM ingredients");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String label = rs.getString("label");
-                String tail = rs.getString("tail");
-                String head = rs.getString("head");
-                links.add(new Link(label, tail, head, this));
+                String name = rs.getString("name");
+                String pdate = rs.getString("pdate");
+                String edate = rs.getString("edate");
+                ings.add(new Ingredient(name, pdate, edate));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return links;
+        return ings;
     }
 
     public boolean isEmpty() {
         try {
             Connection conn = Database.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM links");
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM ingredients");
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);
@@ -82,20 +69,39 @@ public class SemanticNet {
         }
         return true;
     }
-
-    public void addInitialLinks() {
-        addLink(new Link("is-a", "baseball", "sports", this));
-        addLink(new Link("is-a", "Taro", "NIT-student", this));
-        addLink(new Link("speciality", "Taro", "AI", this));
-        addLink(new Link("is-a", "Ferrari", "car", this));
-        addLink(new Link("has-a", "car", "engine", this));
-        addLink(new Link("hobby", "Taro", "baseball", this));
-        addLink(new Link("own", "Taro", "Ferrari", this));
-        addLink(new Link("is-a", "NIT-student", "student", this));
-        addLink(new Link("donot", "student", "study", this));
+    
+    //初期データ追加
+    public void addInitialIngs() {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	
+        addIng(new Ingredient("人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter)));
+        addIng(new Ingredient("大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter)));
+        addIng(new Ingredient("ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter)));
     }
-
-    public String query(ArrayList<Link> queries) {
+    
+    //賞味期限の近い食材を取得
+	public List<Ingredient> getExpiringIngs(int days) {
+        List<Ingredient> ings = new ArrayList<>();
+        try {
+            Connection conn = Database.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT name, pdate, edate FROM ingredients" +
+            										     " WHERE julianday(edate) - julianday('now') <= " + days);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String pdate = rs.getString("pdate");
+                String edate = rs.getString("edate");
+                ings.add(new Ingredient(name, pdate, edate));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return ings;
+	}
+    
+    /*
+    public String query(ArrayList<Ingredient> queries) {
         System.out.println("*** Query ***");
         for (Link q : queries) {
             System.out.println(q.toString());
@@ -182,19 +188,13 @@ public class SemanticNet {
         }
         return result;
     }
+    */
     
-    public void printLinks() {
-        System.out.println("*** Links ***");
-        List<Link> links = getLinks();
+    public void printings() {
+        System.out.println("*** Ingredients ***");
+        List<Ingredient> links = getIngs();
         for (int i = 0; i < links.size(); i++) {
-                System.out.println(((Link) links.get(i)).toString());
-        }
-    }
-
-    public void printNodes() {
-        System.out.println("*** Nodes ***");
-        for (int i = 0; i < nodes.size(); i++) {
-                System.out.println(((Node) nodes.get(i)).toString());
+                System.out.println(((Ingredient) links.get(i)).toString());
         }
     }
 }
