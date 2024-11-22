@@ -53,16 +53,38 @@ public class FoodWasteManagementApp {
             ctx.render("/register.html");
         });
         
-        app.post("/submitRegistration", ctx -> {
+        app.post("/register", ctx -> {
             // フォームから送信された値を取得
-            String name = ctx.formParam("name");   // 食材名
-            String pdate = ctx.formParam("pdate"); // 購入日
-            String edate = ctx.formParam("edate"); // 賞味期限
+            String product_name = ctx.formParam("product-name");   // 食材名
+            String ingredient_name = ctx.formParam("ingredient-name"); // 購入日
+            String purchase_date = ctx.formParam("purchase-date"); // 賞味期限
+            String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
+            String category = ctx.formParam("category"); // 賞味期限
+
+            // 画像の取得の方法がわからない
             
-            fwm.addIng(new Ingredient(name, pdate, edate));
+            fwm.addIng(new Ingredient(product_name, purchase_date, expiry_date));
             
             ctx.redirect("/fwm");
         });
+
+        app.get("/registered", ctx -> {
+            
+            Map<String, Object> model = new HashMap<>();
+
+            // registered.html動作確認用(画像はなし)
+            //*
+            model.put("product_name", "サンプル食品");
+            model.put("ingredient_name", "サンプル食材");;
+            model.put("purchase_date", "2024-11-11");
+            model.put("expiry_date", "2024-12-11");
+            model.put("category", "穀物");
+            //*/
+
+            
+            ctx.render("/registered.html", model);
+        });
+
     }
 }
 
