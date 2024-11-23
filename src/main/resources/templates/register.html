@@ -241,7 +241,8 @@
             var puroductImage = document.getElementById('product-image').files.length > 0;
 
             var submitButton = document.getElementById('submit-button');
-            if (productName && ingredientName && purchaseDate && expiryDate && category && puroductImage) {
+            // ifの中の３つが必須条件
+            if (productName && ingredientName && expiryDate) {
                 submitButton.disabled = false;
             } else {
                 submitButton.disabled = true;

@@ -6,10 +6,14 @@
     <title>商品登録済み画面</title>
     <style>
         .header {
+            /*
             background-color: #ffffff;
             padding: 20px;
-            padding-bottom: 5px;
+            */
+            padding-bottom: 6px;
+            /*
             align-items: flex-start;
+            */
         }
 
         .container {
@@ -35,7 +39,7 @@
         }
 
         .header-hover-color {
-            margin-top: 14px;
+            margin-top: 10px;
             margin-left: auto;
         }
 
@@ -84,12 +88,17 @@
             font-size: 14px;
             color: #888;
             position: relative;
+            cursor: pointer; /* 画像枠をクリック可能にする */
+        }
+
+        .image-container input[type="file"] {
+            display: none; /* ファイル入力フィールドを非表示にする */
         }
 
         .image-container img {
             max-width: 100%;
             max-height: 100%;
-            display: block; /* 画像プレビューを表示する */
+            display: none;
         }
 
         .form-fields {
@@ -106,7 +115,7 @@
             margin-bottom: 5px;
         }
 
-        .form-group input {
+        .form-group input{
             width: 100%;
             padding: 8px;
             font-size: 16px;
@@ -115,22 +124,21 @@
     </style>
 </head>
 <body>
+    <!--ヘッダ部分-->
     <header class="header">
         <div class="container">
             <ul class="nav">
                 <li class="header-hover-color"><a href="/fwm">ホーム</a></li>
                 <li class="header-hover-color active"><a href="/register">商品登録</a></li>
-                <li class="header-hover-color active"><a href="#recipe">レシピ</a></li>
+                <li class="header-hover-color"><a href="#recipe">レシピ</a></li>
             </ul>
         </div>
     </header>
-    
-    <div class="container">
+    <div class="container"> <!--同じcontainerを使うことで境目のようなものができる-->
         <h1>商品登録</h1>
         <div class="form-layout">
             <!-- 左側の画像プレビュー 画像の埋め込み方が微妙-->
             <div class="image-container">
-                <span>商品画像をアップロード</span>
                 <!--画像を"アップロード"する部分がinput-->
                 <!--<input type="file" id="product-image" name="product-image" accept="image/*" onchange="previewImage(event)"> -->
                 <!--画像を"出力"する部分がimg-->
@@ -140,19 +148,19 @@
             <div class="form-fields">
                 <div class="form-group">
                     <label for="product-name">商品名</label>
-                    <input type="text" id="product-name" name="product-name" placeholder="商品名を入力" th:value="${product_name}" readonly>
+                    <input type="text" id="product-name" name="product-name" th:value="${product_name}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="ingredient-name">食材名</label>
-                    <input type="text" id="ingredient-name" name="ingredient-name" placeholder="食材名を入力" th:value="${ingredient_name}" readonly>
+                    <input type="text" id="ingredient-name" name="ingredient-name" th:value="${ingredient_name}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="purchase-date">購入日</label>
-                    <input type="date" id="purchase-date" name="purchase-date" th:value="${purchase_date}" readonly>
+                    <input type="date" id="purchase-date" name="purchase-date" th:value="${purchaseDate}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="expiry-date">期限</label>
-                    <input type="date" id="expiry-date" name="expiry-date" th:value="${expiry_date}" readonly>
+                    <input type="date" id="expiry-date" name="expiry-date" th:value="${expiryDate}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="category">カテゴリー</label>
@@ -162,6 +170,21 @@
         </div>
     </div>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var purchaseDate = document.getElementById('purchase-date');
+            var expiryDate = document.getElementById('expiry-date');
+
+            if (!purchaseDate.value) {
+                // type=dateのデフォルトyyyy/mm/ddを消すため
+                purchaseDate.type = 'text';
+            }
+
+            if (!expiryDate.value) {
+                // type=dateのデフォルトyyyy/mm/ddを消すため
+                expiryDate.type = 'text';
+            }
+        });
+        
         /*
         // 画像プレビュー
         // inputで入力したファイルをimg要素に渡してプレビュー表示
