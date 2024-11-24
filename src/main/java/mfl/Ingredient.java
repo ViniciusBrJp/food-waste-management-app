@@ -61,4 +61,8 @@ public class Ingredient {
 	public String getCategory() {
 		return category;
 	}
+	
+	public String toString() {
+		return product_name + " " + ingredient_name + " " + purchase_date + " " + expriration_date + " " + category;
+	}
 }

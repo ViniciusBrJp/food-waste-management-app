@@ -49,15 +49,6 @@ public class FoodWasteManagementApp {
             ctx.render("/fwm.html", model);
         });
         
-        //削除機能
-        app.post("/delete", ctx -> {
-            String id = ctx.formParam("id");
-            
-            fwm.deleteIng(Integer.parseInt(id));
-            		
-            ctx.redirect("/fwm"); // ホームページにリダイレクト
-        });
-        
         app.get("/register", ctx -> {
             ctx.render("/register.html");
         });
@@ -78,26 +69,59 @@ public class FoodWasteManagementApp {
             ctx.redirect("/fwm");
         });
 
-        app.get("/registered/{id}", ctx -> {
-        	String id = ctx.pathParam("id");
-        	Ingredient ing = fwm.getIng(Integer.parseInt(id));
-            
+        app.get("/registered", ctx -> {
+
             Map<String, Object> model = new HashMap<>();
+            
+            // URLパラメータからidを取得
+            String id = ctx.queryParam("id");
+            
+            //idから食材情報を取得
+            Ingredient ing = fwm.getIng(Integer.parseInt(id));
 
-            // registered.html動作確認用(画像はなし)
-            //*
-            model.put("product_name", ing.getPName());
-            model.put("ingredient_name", ing.getIName());;
-            model.put("purchase_date", ing.getPdate());
-            model.put("expiry_date", ing.getEdate());
-            model.put("category", ing.getCategory());
-            //*/
+            // URLパラメータからデータを取得
+            String productName = ing.getPName();
+            String ingredientName = ing.getIName();
+            String purchaseDate = ing.getPdate();
+            String expiryDate = ing.getEdate();
+            String category = ing.getCategory();
 
+            // pdateは"yyyy//mm/dd"の形
+
+            // 日付の変換 /から-へ
+            purchaseDate = datechange(purchaseDate);
+            expiryDate = datechange(expiryDate);
+
+            // データをモデルに追加
+            model.put("product_name", productName);
+            model.put("ingredient_name", ingredientName);
+            model.put("purchase_date", purchaseDate);
+            model.put("expiry_date", expiryDate);
+            model.put("category", category);
             
             ctx.render("/registered.html", model);
         });
-
+        
+        //削除機能
+        app.get("/delete", ctx -> {
+            
+            // URLパラメータからidを取得
+            String id = ctx.queryParam("id");
+            
+            System.out.println("削除: " + fwm.getIng(Integer.parseInt(id)).toString());
+            
+            fwm.deleteIng(Integer.parseInt(id));
+            
+            ctx.redirect("/fwm"); // ホームページにリダイレクト
+        });
     }
+    
+    public static String datechange(String date) {
+		if (date.contains("/")) {
+			date = date.replace("/", "-");
+		}
+		return date;
+	}
 }
 
 
