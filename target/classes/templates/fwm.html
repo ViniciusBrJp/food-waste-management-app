@@ -47,7 +47,8 @@
       <table class="table table-bordered">
 	<thead class="thead-dark">
 	  <tr>
-	    <th>image<br/>画像を入れるつもり</th>
+	    <th>image<br/>画像</th>
+	    <th>delete<br/>削除ボタン</th>
 	    <th>Name<br/>(商品名)</th>
 	    <th>Pdate<br/>(購入日)</th>
 	    <th>Edate<br/>(賞味期限)</th>
@@ -56,6 +57,7 @@
 	<tbody>
 	  <tr th:each="ing : ${fwm.getIngs()}">
 		<td><a th:href="@{/registered(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
+		<td><a th:href="@{/delete(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">削除</a></td>
 	    <td th:text="${ing.getName()}"></td>
 	    <td th:text="${ing.getPdate()}"></td>
 	    <td th:text="${ing.getEdate()}"></td>
@@ -68,6 +70,8 @@
 	<table class="table table-bordered">
 	<thead class="thead-dark">
 	<tr>
+		<th>image<br/>画像</th>
+	    <th>delete<br/>削除ボタン</th>
 		<th>Name<br/>(商品名)</th>
 		<th>Pdate<br/>(購入日)</th>
 		<th>Edate<br/>(賞味期限)</th>
@@ -75,6 +79,8 @@
 	</thead>
 	<tbody>
 	<tr th:each="ing : ${fwm.getExpiringIngs(2)}">
+		<td><a th:href="@{/registered(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
+		<td><a th:href="@{/delete(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">削除</a></td>
 		<td th:text="${ing.getName()}"></td>
 		<td th:text="${ing.getPdate()}"></td>
 		<td th:text="${ing.getEdate()}"></td>
