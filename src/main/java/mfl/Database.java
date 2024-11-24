@@ -22,11 +22,21 @@ public class Database {
 		    
 		    stmt.execute("DROP TABLE IF EXISTS ingredients");
 		    
-		    stmt.execute(  "CREATE TABLE IF NOT EXISTS ingredients (" +
-				           "id INTEGER PRIMARY KEY, " +
-				           "name VARCHAR(255), " +
-				           "pdate VARCHAR(255), " +
-				           "edate VARCHAR(255))");
+		    stmt.execute(
+		    	    "CREATE TABLE IF NOT EXISTS ingredients (" +
+		    	    "id INTEGER PRIMARY KEY, " +
+		    	    "pname VARCHAR(255), " +
+		    	    "iname VARCHAR(255), " +
+		    	    "pdate VARCHAR(255), " +
+		    	    "edate VARCHAR(255), " +
+		    	    "category VARCHAR(255) CHECK(category IN (" +
+		    	    "'穀類', 'いも及びでん粉類', '砂糖及び甘味類', '豆類', '種実類', " +
+		    	    "'野菜類', 'きのこ類', '藻類', '魚介類', '肉類', " +
+		    	    "'卵類', '乳類', '油脂類', '菓子類', '飲料類', " +
+		    	    "'調味料類', 'その他'))" +
+		    	    ")"
+		    	);
+
 		} catch (SQLException e) {
 		    e.printStackTrace();
 		}

@@ -48,15 +48,27 @@
 	<thead class="thead-dark">
 	  <tr>
 	    <th>Name<br/>(商品名)</th>
+		<th>Name<br/>(食材名)</th>
 	    <th>Pdate<br/>(購入日)</th>
 	    <th>Edate<br/>(賞味期限)</th>
+		<th>Actions<br/>(操作)</th>
 	  </tr>
 	</thead>
 	<tbody>
 	  <tr th:each="ing : ${fwm.getIngs()}">
-	    <td th:text="${ing.getName()}"></td>
+	    <td th:text="${ing.getPName()}"></td>
+		<td th:text="${ing.getIName()}"></td>
 	    <td th:text="${ing.getPdate()}"></td>
 	    <td th:text="${ing.getEdate()}"></td>
+		<td>
+			<!-- 削除ボタン -->
+			<form action="/delete" method="post" style="display:inline;">
+				<input type="hidden" name="id" th:value="${ing.getId()}"/>
+				<button type="submit" class="btn btn-danger">削除</button>
+			</form>
+			<!-- 詳細ボタン -->
+			<a th:href="@{'/registered/{id}'(id=${ing.getId()})}" class="btn btn-primary">詳細</a>
+		</td>
 	  </tr>
 	</tbody>
       </table>
@@ -67,15 +79,27 @@
 	<thead class="thead-dark">
 	<tr>
 		<th>Name<br/>(商品名)</th>
+		<th>Name<br/>(食材名)</th>
 		<th>Pdate<br/>(購入日)</th>
 		<th>Edate<br/>(賞味期限)</th>
+		<th>Actions<br/>(操作)</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr th:each="ing : ${fwm.getExpiringIngs(2)}">
-		<td th:text="${ing.getName()}"></td>
+		<td th:text="${ing.getPName()}"></td>
+		<td th:text="${ing.getIName()}"></td>
 		<td th:text="${ing.getPdate()}"></td>
 		<td th:text="${ing.getEdate()}"></td>
+		<td>
+			<!-- 削除ボタン -->
+			<form action="/delete" method="post" style="display:inline;">
+				<input type="hidden" name="id" th:value="${ing.getId()}"/>
+				<button type="submit" class="btn btn-danger">削除</button>
+			</form>
+			<!-- 詳細ボタン -->
+			<a th:href="@{'/registered/{id}'(id=${ing.getId()})}" class="btn btn-primary">詳細</a>
+		</td>
 	</tr>
 	</tbody>
 	</table>  

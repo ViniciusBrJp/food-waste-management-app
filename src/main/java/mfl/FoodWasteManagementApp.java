@@ -49,36 +49,48 @@ public class FoodWasteManagementApp {
             ctx.render("/fwm.html", model);
         });
         
+        //削除機能
+        app.post("/delete", ctx -> {
+            String id = ctx.formParam("id");
+            
+            fwm.deleteIng(Integer.parseInt(id));
+            		
+            ctx.redirect("/fwm"); // ホームページにリダイレクト
+        });
+        
         app.get("/register", ctx -> {
             ctx.render("/register.html");
         });
         
         app.post("/register", ctx -> {
             // フォームから送信された値を取得
-            String product_name = ctx.formParam("product-name");   // 食材名
-            String ingredient_name = ctx.formParam("ingredient-name"); // 購入日
-            String purchase_date = ctx.formParam("purchase-date"); // 賞味期限
+            String product_name = ctx.formParam("product-name");   // 商品名
+            String ingredient_name = ctx.formParam("ingredient-name"); // 食材名
+            String purchase_date = ctx.formParam("purchase-date"); // 購入日
             String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
-            String category = ctx.formParam("category"); // 賞味期限
+            String category = ctx.formParam("category"); // カテゴリ
 
             // 画像の取得の方法がわからない
             
-            fwm.addIng(new Ingredient(product_name, purchase_date, expiry_date));
+            fwm.addIng(new Ingredient(product_name, ingredient_name,
+            		purchase_date, expiry_date, category));
             
             ctx.redirect("/fwm");
         });
 
-        app.get("/registered", ctx -> {
+        app.get("/registered/{id}", ctx -> {
+        	String id = ctx.pathParam("id");
+        	Ingredient ing = fwm.getIng(Integer.parseInt(id));
             
             Map<String, Object> model = new HashMap<>();
 
             // registered.html動作確認用(画像はなし)
             //*
-            model.put("product_name", "サンプル食品");
-            model.put("ingredient_name", "サンプル食材");;
-            model.put("purchase_date", "2024-11-11");
-            model.put("expiry_date", "2024-12-11");
-            model.put("category", "穀物");
+            model.put("product_name", ing.getPName());
+            model.put("ingredient_name", ing.getIName());;
+            model.put("purchase_date", ing.getPdate());
+            model.put("expiry_date", ing.getEdate());
+            model.put("category", ing.getCategory());
             //*/
 
             
