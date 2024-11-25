@@ -73,19 +73,79 @@ public class FoodWasteManagementApp {
             Map<String, Object> model = new HashMap<>();
 
             // registered.html動作確認用(画像はなし)
-            //*
+            /*
             model.put("product_name", "サンプル食品");
             model.put("ingredient_name", "サンプル食材");;
             model.put("purchase_date", "2024-11-11");
             model.put("expiry_date", "2024-12-11");
             model.put("category", "穀物");
-            //*/
+            */
 
+            // URLパラメータからデータを取得
+            String productName = ctx.queryParam("name");
+            String purchaseDate = ctx.queryParam("pdate");
+            String expiryDate = ctx.queryParam("edate");
+
+            // pdateは"yyyy//mm/dd"の形
+
+            // 日付の変換 /から-へ
+            purchaseDate = datechange(purchaseDate);
+            expiryDate = datechange(expiryDate);
+
+            // データをモデルに追加
+            model.put("product_name", productName);
+            model.put("purchase_date", purchaseDate);
+            model.put("expiry_date", expiryDate);
             
             ctx.render("/registered.html", model);
         });
 
+        app.get("/delete", ctx -> {
+            
+            Map<String, Object> model = new HashMap<>();
+
+            // registered.html動作確認用(画像はなし)
+            /*
+            model.put("product_name", "サンプル食品");
+            model.put("ingredient_name", "サンプル食材");;
+            model.put("purchase_date", "2024-11-11");
+            model.put("expiry_date", "2024-12-11");
+            model.put("category", "穀物");
+            */
+
+            // URLパラメータからデータを取得
+            String productName = ctx.queryParam("name");
+            String purchaseDate = ctx.queryParam("pdate");
+            String expiryDate = ctx.queryParam("edate");
+
+            // pdateは"yyyy//mm/dd"の形
+
+            // 日付の変換 /から-へ ここでは使わなくてよいかも
+            purchaseDate = datechange(purchaseDate);
+            expiryDate = datechange(expiryDate);
+
+            // ここで削除の動きを追加 データベース上で削除？
+
+            //*
+            System.out.println(productName);
+            System.out.println(purchaseDate);
+            System.out.println(expiryDate);
+            System.out.println("削除");
+            //*/
+            
+            ctx.redirect("/fwm");
+        });
+
     }
+
+    public static String datechange(String date) {
+		if (date.contains("/")) {
+			date = date.replace("/", "-");
+		}
+		return date;
+	    }
 }
 
+// 実行方法
+// mvn exec:java -Dexec.mainClass="mfl.FoodWasteManagementApp"
 
