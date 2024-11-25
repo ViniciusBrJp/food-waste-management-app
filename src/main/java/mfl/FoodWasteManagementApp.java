@@ -76,7 +76,7 @@ public class FoodWasteManagementApp {
             String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
             String category = ctx.formParam("category"); // カテゴリ
             
-            String file_name = "noimage.png";
+            String file_name = "noimage.png"; //ファイル名の初期値
 
             // uploadedFileオブジェクトにはファイル名("11305.jpg"のような"/"を含まない形)、
             //*
@@ -117,7 +117,8 @@ public class FoodWasteManagementApp {
             //idから食材情報を取得
             Ingredient ing = fwm.getIng(Integer.parseInt(id));
 
-            // URLパラメータからデータを取得
+            // ingからデータを取得
+            String fileName = ing.getFName();
             String productName = ing.getPName();
             String ingredientName = ing.getIName();
             String purchaseDate = ing.getPdate();
@@ -131,6 +132,7 @@ public class FoodWasteManagementApp {
             expiryDate = datechange(expiryDate);
 
             // データをモデルに追加
+            model.put("file_name", fileName);
             model.put("product_name", productName);
             model.put("ingredient_name", ingredientName);
             model.put("purchase_date", purchaseDate);
