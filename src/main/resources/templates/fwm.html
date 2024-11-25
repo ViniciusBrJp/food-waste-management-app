@@ -56,9 +56,9 @@
 	</thead>
 	<tbody>
 	  <tr th:each="ing : ${fwm.getIngs()}">
-		<td><a th:href="@{/registered(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
-		<td><a th:href="@{/delete(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">削除</a></td>
-	    <td th:text="${ing.getName()}"></td>
+		<td><a th:href="@{/registered(id=${ing.getId()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
+		<td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
+	    <td th:text="${ing.getPName()}"></td>
 	    <td th:text="${ing.getPdate()}"></td>
 	    <td th:text="${ing.getEdate()}"></td>
 	  </tr>
@@ -79,9 +79,9 @@
 	</thead>
 	<tbody>
 	<tr th:each="ing : ${fwm.getExpiringIngs(2)}">
-		<td><a th:href="@{/registered(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
-		<td><a th:href="@{/delete(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">削除</a></td>
-		<td th:text="${ing.getName()}"></td>
+		<td><a th:href="@{/registered(id=${ing.getId()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
+		<td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
+		<td th:text="${ing.getPName()}"></td>
 		<td th:text="${ing.getPdate()}"></td>
 		<td th:text="${ing.getEdate()}"></td>
 	</tr>
