@@ -28,12 +28,13 @@ public class FWM {
         	
             Connection conn = Database.getConnection();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO ingredients ("
-            		+ "pname, iname, pdate, edate, category) VALUES (?, ?, ?, ?, ?)");
-            ps.setString(1, ing.getPName());
-            ps.setString(2, ing.getIName());
-            ps.setString(3, ing.getPdate());
-            ps.setString(4, ing.getEdate());
-            ps.setString(5, ing.getCategory());
+            		+ "fname, pname, iname, pdate, edate, category) VALUES (?, ?, ?, ?, ?, ?)");
+            ps.setString(1, ing.getFName());
+            ps.setString(2, ing.getPName());
+            ps.setString(3, ing.getIName());
+            ps.setString(4, ing.getPdate());
+            ps.setString(5, ing.getEdate());
+            ps.setString(6, ing.getCategory());
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -62,13 +63,14 @@ public class FWM {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
             	int id = rs.getInt("id");
+            	String fname = rs.getString("fname");
                 String pname = rs.getString("pname");
                 String iname = rs.getString("iname");
                 String pdate = rs.getString("pdate");
                 String edate = rs.getString("edate");
                 String category = rs.getString("category");
                 
-                Ingredient ing = new Ingredient(pname, iname, pdate, edate, category);
+                Ingredient ing = new Ingredient(fname, pname, iname, pdate, edate, category);
                 ing.setId(id);
                 ings.add(ing);
             }
@@ -80,6 +82,7 @@ public class FWM {
     
     //個別データ取得
 	public Ingredient getIng(int id) {
+		String fname = "";
 		String pname = "";
         String iname = "";
         String pdate = "";
@@ -93,6 +96,7 @@ public class FWM {
             ResultSet rs = ps.executeQuery();
             
             if (rs.next()) {
+            	fname = rs.getString("fname");
                 pname = rs.getString("pname");
                 iname = rs.getString("iname");
             	pdate = rs.getString("pdate");
@@ -103,7 +107,7 @@ public class FWM {
             e.printStackTrace();
         }
         
-        Ingredient ing = new Ingredient(pname, iname, pdate, edate, category);
+        Ingredient ing = new Ingredient(fname, pname, iname, pdate, edate, category);
         ing.setId(id);
         return ing;
 	}
@@ -127,9 +131,9 @@ public class FWM {
     public void addInitialIngs() {
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     	
-        addIng(new Ingredient("人参", "人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter), "野菜類"));
-        addIng(new Ingredient("大根", "大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter), "野菜類"));
-        addIng(new Ingredient("ピーマン", "ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter), "野菜類"));
+        addIng(new Ingredient("carrot.jpg", "人参", "人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter), "野菜類"));
+        addIng(new Ingredient("radish.jpg", "大根", "大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter), "野菜類"));
+        addIng(new Ingredient("greenpepper.jpg", "ピーマン", "ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter), "野菜類"));
     }
     
     //賞味期限の近い食材を取得
@@ -145,13 +149,14 @@ public class FWM {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
             	int id = rs.getInt("id");
+            	String fname = rs.getString("fname");
                 String pname = rs.getString("pname");
                 String iname = rs.getString("iname");
                 String pdate = rs.getString("pdate");
                 String edate = rs.getString("edate");
                 String category = rs.getString("category");
                 
-                Ingredient ing = new Ingredient(pname, iname, pdate, edate, category);
+                Ingredient ing = new Ingredient(fname, pname, iname, pdate, edate, category);
                 ing.setId(id);
                 
                 ings.add(ing);
