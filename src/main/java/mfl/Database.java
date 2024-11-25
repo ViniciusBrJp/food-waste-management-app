@@ -25,6 +25,7 @@ public class Database {
 		    stmt.execute(
 		    	    "CREATE TABLE IF NOT EXISTS ingredients (" +
 		    	    "id INTEGER PRIMARY KEY, " +
+		    	    "fname VARCHAR(255), " +
 		    	    "pname VARCHAR(255), " +
 		    	    "iname VARCHAR(255), " +
 		    	    "pdate VARCHAR(255), " +

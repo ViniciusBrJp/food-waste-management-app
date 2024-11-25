@@ -1,10 +1,8 @@
 package mfl;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 public class Ingredient {
 	int    id;  // ID
+	String file_name; // ファイル名
 	String product_name;  // 商品名
 	String ingredient_name; // 食材名
 	String purchase_date; // 購入日
@@ -12,6 +10,7 @@ public class Ingredient {
 	String category; // カテゴリ
 
 	public Ingredient(
+			String file_name,  	        // ファイル名
 			String product_name,        // 商品名
 			String ingredient_name,     // 食材名
 			String purchase_date,       // 購入日
@@ -27,6 +26,7 @@ public class Ingredient {
 			expriration_date = expriration_date.replace("-", "/");
 		}
 		
+		this.file_name = file_name;
 		this.product_name = product_name;
 		this.ingredient_name = ingredient_name;
 	    this.purchase_date = purchase_date;
@@ -40,6 +40,10 @@ public class Ingredient {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public String getFName() {
+		return file_name;
 	}
 
 	public String getPName() {

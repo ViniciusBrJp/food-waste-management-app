@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ import io.javalin.rendering.template.JavalinThymeleaf;
  */
 public class FoodWasteManagementApp {
     public static void main(String[] args) {
-        // H2データベースの初期化
+        // SQLiteデータベースの初期化
         Database.initializeDatabase();
 
         // Thymeleafのテンプレート設定
@@ -38,6 +37,18 @@ public class FoodWasteManagementApp {
 
         // Javalinアプリの作成
         Javalin app = Javalin.create().start(50083);
+        
+        // uploadDirにファイルを保存するディレクトリのパスを指定
+        String uploadDir = "src/main/resources/uploads/";
+        
+        // ディレクトリが存在しない場合は作成
+        if (!Files.exists(Paths.get(uploadDir))) {
+			try {
+				Files.createDirectories(Paths.get(uploadDir));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
         
         FWM fwm = new FWM();
 
@@ -64,22 +75,24 @@ public class FoodWasteManagementApp {
             String purchase_date = ctx.formParam("purchase-date"); // 購入日
             String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
             String category = ctx.formParam("category"); // カテゴリ
+            
+            String file_name = "noimage.png";
 
             // uploadedFileオブジェクトにはファイル名("11305.jpg"のような"/"を含まない形)、
             //*
             var uploadedFile = ctx.uploadedFile("product-image"); // 読み込んだファイルを取得
             if (uploadedFile != null) {
                 try {
-                    // uploadDirにファイルを保存するディレクトリのパスを指定
-                    String uploadDir = "src/main/resources/uploads/";
-                    // ディレクトリが存在しない場合は作成
-                    Files.createDirectories(Paths.get(uploadDir));
+                	file_name = uploadedFile.filename();
 
                     // 保存するファイルのパスを指定
-                    File file = new File(uploadDir + uploadedFile.filename()); // uploads/touhu.jpg
-                    // アップロードされたファイルの内容を指定されたパスにコピー
-                    Files.copy(uploadedFile.content(), file.toPath());
-
+                    File file = new File(uploadDir + file_name); // uploads/touhu.jpg
+                    
+					if (!file.exists()) {
+						// アップロードされたファイルの内容を指定されたパスにコピー
+	                    Files.copy(uploadedFile.content(), file.toPath());
+					}
+					
                     // ファイルのパスを出力(確認で利用)
                     //System.out.println("File uploaded to: " + file.getAbsolutePath());
                 } catch (IOException e) {
@@ -88,7 +101,7 @@ public class FoodWasteManagementApp {
             }
             //*/
             
-            fwm.addIng(new Ingredient(product_name, ingredient_name,
+            fwm.addIng(new Ingredient(file_name, product_name, ingredient_name,
             		purchase_date, expiry_date, category));
             
             ctx.redirect("/fwm");
