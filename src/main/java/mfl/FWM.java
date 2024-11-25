@@ -46,6 +46,7 @@ public class FWM {
 	public void deleteIng(int id) {
 		try {
 			Connection conn = Database.getConnection();
+			
 			PreparedStatement ps = conn.prepareStatement("DELETE FROM ingredients WHERE id = ?");
 			ps.setInt(1, id);
 			ps.executeUpdate();

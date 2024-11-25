@@ -154,6 +154,23 @@ public class FoodWasteManagementApp {
         
             ctx.redirect("/fwm"); // ホームページにリダイレクト
         });
+        
+        // 画像ファイルを提供
+        app.get("/images/{filename}", ctx -> {
+            String filename = ctx.pathParam("filename");
+            var imagePath = Paths.get(uploadDir, filename); // 画像フォルダのパス
+            String extension = getFileExtension(filename);
+
+            if (Files.exists(imagePath)) {
+                ctx.contentType("image/" + extension); // 必要に応じて適切なContent-Typeを設定 (例: "image/png")
+                ctx.result(Files.newInputStream(imagePath));
+
+                //System.out.println("画像ファイルを提供: " + imagePath);
+            } else {
+                ctx.status(404).result("Image not found");
+            }
+        });
+        
     }
     
     public static String datechange(String date) {
@@ -162,6 +179,16 @@ public class FoodWasteManagementApp {
 		}
 		return date;
 	}
+    
+    // 拡張子を取得するメソッド
+    private static String getFileExtension(String filename) {
+        String extension = "";
+        int lastIndex = filename.lastIndexOf('.');
+        if (lastIndex != -1) {
+            extension = filename.substring(lastIndex + 1).toLowerCase();
+        }
+        return extension;
+    }
 }
 
 // 実行方法

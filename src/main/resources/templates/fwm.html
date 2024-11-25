@@ -56,7 +56,11 @@
 	</thead>
 	<tbody>
 	  <tr th:each="ing : ${fwm.getIngs()}">
-		<td><a th:href="@{/registered(id=${ing.getId()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
+		<td>
+			<a th:href="@{/registered(id=${ing.getId()})}">
+			  <img th:src="@{/images/{filename}(filename=${ing.getFName()})}" alt="商品画像" style="max-width: 100%; max-height: 150px; width: auto; height: auto;"/>
+			</a>
+		</td>
 		<td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
 	    <td th:text="${ing.getPName()}"></td>
 	    <td th:text="${ing.getPdate()}"></td>
@@ -79,7 +83,11 @@
 	</thead>
 	<tbody>
 	<tr th:each="ing : ${fwm.getExpiringIngs(2)}">
-		<td><a th:href="@{/registered(id=${ing.getId()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
+		<td>
+			<a th:href="@{/registered(id=${ing.getId()})}">
+			  <img th:src="@{/images/{filename}(filename=${ing.getFName()})}" alt="商品画像" style="width: 200px; height: auto;"/>
+			</a>
+		</td>
 		<td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
 		<td th:text="${ing.getPName()}"></td>
 		<td th:text="${ing.getPdate()}"></td>
@@ -88,20 +96,6 @@
 	</tbody>
 	</table>  
 
-	<!--
-      <h3>質問（Query）</h3>
-      <form action="/fwm" method="post">
-	<div class="form-group">
-	  <textarea class="form-control" name="queryStr" rows="4" th:text="${query}"></textarea>
-	</div>
-	<button class="btn btn-primary" type="submit">
-	  質問を実行
-	</button>
-      </form>
-
-      <h3>結果：</h3>
-      <p th:text="${result}"></p>
-	-->
     </div>
 
 	<footer>
