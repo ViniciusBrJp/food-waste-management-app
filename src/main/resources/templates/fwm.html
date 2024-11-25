@@ -43,50 +43,62 @@
 	</header>
 
 	<h1>食材一覧</h1>
-    <div class="container">
-      <table class="table table-bordered">
-	<thead class="thead-dark">
-	  <tr>
-	    <th>image<br/>画像</th>
-	    <th>delete<br/>削除ボタン</th>
-	    <th>Name<br/>(商品名)</th>
-	    <th>Pdate<br/>(購入日)</th>
-	    <th>Edate<br/>(賞味期限)</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  <tr th:each="ing : ${fwm.getIngs()}">
-		<td><a th:href="@{/registered(id=${ing.getId()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
-		<td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
-	    <td th:text="${ing.getPName()}"></td>
-	    <td th:text="${ing.getPdate()}"></td>
-	    <td th:text="${ing.getEdate()}"></td>
-	  </tr>
-	</tbody>
-      </table>
+	<div class="container">
+	  <div class="row">
+		<div class="col-md-4" th:each="ing : ${fwm.getIngs()}">
+		  <div class="card" style="width: 18rem; margin-bottom: 20px;">
+			<img class="card-img-top" src="#" alt="食品" style="width: 100%; height: auto;" />
+			<div class="card-body">
+			  <p class="card-text">
+				<strong>商品名:</strong> <span th:text="${ing.getName()}"></span>
+			  </p>
+			  <p class="card-text">
+				<strong>購入日:</strong> <span th:text="${ing.getPdate()}"></span>
+			  </p>
+			  <p class="card-text">
+				<strong>賞味期限:</strong> <span th:text="${ing.getEdate()}"></span>
+			  </p>
+			  <a class="btn btn-primary" th:href="@{/registered(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">
+				登録済み商品フォームへ
+			  </a>
+			  <a class="btn btn-danger" th:href="@{/delete(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}" style="margin-left: 10px;">
+				削除
+			  </a>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
 
 	<h1>賞味期限の近い食材一覧</h1>
 	<div class="container">
-	<table class="table table-bordered">
-	<thead class="thead-dark">
-	<tr>
-		<th>image<br/>画像</th>
-	    <th>delete<br/>削除ボタン</th>
-		<th>Name<br/>(商品名)</th>
-		<th>Pdate<br/>(購入日)</th>
-		<th>Edate<br/>(賞味期限)</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr th:each="ing : ${fwm.getExpiringIngs(2)}">
-		<td><a th:href="@{/registered(id=${ing.getId()})}">登録済み商品フォームへ(右側の情報が表示される)</a></td>
-		<td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
-		<td th:text="${ing.getPName()}"></td>
-		<td th:text="${ing.getPdate()}"></td>
-		<td th:text="${ing.getEdate()}"></td>
-	</tr>
-	</tbody>
-	</table>  
+	  <div class="row">
+		<div class="col-md-4" th:each="ing : ${fwm.getExpiringIngs(2)}">
+		  <div class="card" style="width: 18rem; margin-bottom: 20px;">
+			<img class="card-img-top" src="#" alt="食品" style="width: 100%; height: auto;" />
+			<div class="card-body">
+			  <p class="card-text">
+				<strong>商品名:</strong> <span th:text="${ing.getName()}"></span>
+			  </p>
+			  <p class="card-text">
+				<strong>購入日:</strong> <span th:text="${ing.getPdate()}"></span>
+			  </p>
+			  <p class="card-text">
+				<strong>賞味期限:</strong> <span th:text="${ing.getEdate()}"></span>
+			  </p>
+			  <a class="btn btn-primary" th:href="@{/registered(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}">
+				登録済み商品フォームへ
+			  </a>
+			  <a class="btn btn-danger" th:href="@{/delete(name=${ing.getName()}, pdate=${ing.getPdate()}, edate=${ing.getEdate()})}" style="margin-left: 10px;">
+				削除
+			  </a>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
 
 	<!--
       <h3>質問（Query）</h3>
