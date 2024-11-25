@@ -149,4 +149,6 @@ public class FoodWasteManagementApp {
 	}
 }
 
+// 実行方法
 // mvn exec:java -Dexec.mainClass="mfl.FoodWasteManagementApp"
+

@@ -1,2 +1,26 @@
+# OS固有のファイル
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Maven生成物
 /target/
+/.mvn/
+mvnw
+mvnw.cmd
+
+# データベースなど
+/data/*
+
+# ただしテンプレートや初期データは含める場合
+!/data/example.json
+
+# IDE関連
+.idea/
+*.iml
+*.classpath
+*.project
+.settings/
+
+# ログファイル
+*.log
