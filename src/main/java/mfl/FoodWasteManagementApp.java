@@ -1,5 +1,9 @@
 package mfl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +65,28 @@ public class FoodWasteManagementApp {
             String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
             String category = ctx.formParam("category"); // カテゴリ
 
-            // 画像の取得の方法がわからない
+            // uploadedFileオブジェクトにはファイル名("11305.jpg"のような"/"を含まない形)、
+            //*
+            var uploadedFile = ctx.uploadedFile("product-image"); // 読み込んだファイルを取得
+            if (uploadedFile != null) {
+                try {
+                    // uploadDirにファイルを保存するディレクトリのパスを指定
+                    String uploadDir = "src/main/resources/uploads/";
+                    // ディレクトリが存在しない場合は作成
+                    Files.createDirectories(Paths.get(uploadDir));
+
+                    // 保存するファイルのパスを指定
+                    File file = new File(uploadDir + uploadedFile.filename()); // uploads/touhu.jpg
+                    // アップロードされたファイルの内容を指定されたパスにコピー
+                    Files.copy(uploadedFile.content(), file.toPath());
+
+                    // ファイルのパスを出力(確認で利用)
+                    //System.out.println("File uploaded to: " + file.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //*/
             
             fwm.addIng(new Ingredient(product_name, ingredient_name,
             		purchase_date, expiry_date, category));
@@ -124,4 +149,6 @@ public class FoodWasteManagementApp {
 	}
 }
 
+// 実行方法
+// mvn exec:java -Dexec.mainClass="mfl.FoodWasteManagementApp"
 
