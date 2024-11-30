@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.thymeleaf.TemplateEngine;
@@ -176,64 +177,20 @@ public class FoodWasteManagementApp {
         });
 
         app.post("/search", ctx -> {
-            Map<String, Object> model = new HashMap<>();
-
-            // フォームから送信された値を取得
-            String product_name = ctx.formParam("product-name");   // 商品名
-            String ingredient_name = ctx.formParam("ingredient-name"); // 食材名
-            String purchase_date = ctx.formParam("purchase-date"); // 購入日
-            String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
-            String category = ctx.formParam("category"); // カテゴリ
-
-            String file_name = "noimage.png"; //ファイル名の初期値
-
-            // uploadedFileオブジェクトにはファイル名("11305.jpg"のような"/"を含まない形)、
-            var uploadedFile = ctx.uploadedFile("product-image"); // 読み込んだファイルを取得
-            file_name = uploadedFile.filename();
-
-            //ファイルをディレクトリに保存する作業はいらないはず？
-            /*
-            if (uploadedFile != null) {
-                try {
-                	file_name = uploadedFile.filename();
-
-                    // 保存するファイルのパスを指定
-                    File file = new File(uploadDir + file_name); // uploads/touhu.jpg
-                    
-					if (!file.exists()) {
-						// アップロードされたファイルの内容を指定されたパスにコピー
-	                    Files.copy(uploadedFile.content(), file.toPath());
-					}
-					
-                    // ファイルのパスを出力(確認で利用)
-                    //System.out.println("File uploaded to: " + file.getAbsolutePath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            */
-
-            FWM search_fwm = new FWM(); // 新オブジェクト作る？
-
-
-            // ここでマッチングを行って(行うメソッドを呼び出して？)検索結果と合ったIngreient型オブジェクトをsearch_fwmにaddIng？
-            
-
-            System.out.println("search_fwmの状態: " + search_fwm.getIngs().size()); // 0になると思ったが、fwmのデータ数になってしまう
-
-            /*
-            search_fwm.addIng(new Ingredient(file_name, product_name, ingredient_name,
-            		purchase_date, expiry_date, category));
-            */
-
-            if(true) { // 検索して１つでも見つかれば いまはtrue
-                model.put("fwm", search_fwm);
-                ctx.sessionAttribute("searchResults", model); // セッションに検索結果を保存
+            String keyword = ctx.formParam("keyword"); // フォームからキーワードを取得
+            List<Ingredient> searchResults = fwm.searchByKeyword(keyword); // Matcher を用いた検索
+        
+            if (!searchResults.isEmpty()) {
+                Map<String, Object> model = new HashMap<>();
+                model.put("results", searchResults);
+                ctx.sessionAttribute("searchResults", model); // 結果をセッションに保存
                 ctx.redirect("/found");
             } else {
                 ctx.redirect("/notfound");
             }
         });
+        
+
 
         app.get("/found", ctx -> {
             Map<String, Object> model = ctx.sessionAttribute("searchResults");
