@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>検索結果</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  </head>
+  <body>
+    <header>
+      <style>
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #4CAF50;
+          color: white;
+          padding: 10px 20px;
+        }
+        nav {
+          margin-left: auto;
+        }
+        nav a {
+          color: white;
+          text-decoration: none;
+          margin: 0 15px;
+          font-size: 24px;
+        }
+        footer {
+          background-color: #333;
+          color: white;
+          text-align: center;
+          padding: 10px 0;
+        }
+      </style>
+      <h1>検索結果</h1>
+      <nav>
+        <a href="/fwm">ホーム</a>
+        <a href="/register">商品登録</a>
+        <a href="#recipe">レシピ</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+				<th>image<br />画像</th>
+				<th>delete<br />削除ボタン</th>
+				<th>Name<br />(商品名)</th>
+				<th>Pdate<br />(購入日)</th>
+				<th>Edate<br />(賞味期限)</th>
+			  </tr>
+        </thead>
+        <tbody>
+			<tr th:each="result : ${results}">
+				<td>
+					<a th:href="@{/registered(id=${result.getId()})}">
+						<img th:src="@{/images/{filename}(filename=${result.getFName()})}" alt="商品画像" style="width: 200px; height: auto;" />
+					</a>
+				</td>
+				<td><a th:href="@{/delete(id=${result.getId()})}">削除</a></td>
+				<td th:text="${result.getPName()}"></td>
+				<td th:text="${result.getPdate()}"></td>
+				<td th:text="${result.getEdate()}"></td>
+			</tr>	
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>知能プログラミング演習Ⅱ グループ04</p>
+    </footer>
+  </body>
+</html>

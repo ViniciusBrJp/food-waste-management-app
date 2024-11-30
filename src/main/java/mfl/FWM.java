@@ -168,4 +168,128 @@ public class FWM {
         
         return ings;
 	}
+
+    public List<Ingredient> searchByKeyword(String keyword) {
+        List<Ingredient> ings = new ArrayList<>();
+        Matcher matcher = new Matcher(); // Matcher インスタンス作成
+    
+        try {
+            Connection conn = Database.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ingredients");
+            ResultSet rs = ps.executeQuery();
+    
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String fname = rs.getString("fname");
+                String pname = rs.getString("pname");
+                String iname = rs.getString("iname");
+                String pdate = rs.getString("pdate");
+                String edate = rs.getString("edate");
+                String category = rs.getString("category");
+    
+                Ingredient ing = new Ingredient(fname, pname, iname, pdate, edate, category);
+                ing.setId(id);
+    
+                // Matcher を用いた部分一致の確認
+                Map<String, String> vars = new HashMap<>();
+                if (matcher.matching(pname, keyword, vars) || matcher.matching(iname, keyword, vars)) {
+                    ings.add(ing); // キーワードに一致した場合リストに追加
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return ings;
+    }
+    
+
+
+/**
+ * Matcherクラス
+ */
+class Matcher {
+    StringTokenizer st1;
+    StringTokenizer st2;
+    Map<String, String> vars;
+
+    Matcher() {
+            vars = new HashMap<String, String>();
+    }
+
+    public boolean matching(String string1, String string2, Map<String, String> bindings) {
+            this.vars = bindings;
+            if (matching(string1, string2)) {
+                    return true;
+            } else {
+                    return false;
+            }
+    }
+
+    public boolean matching(String string1, String string2) {
+            //System.out.println(string1);
+            //System.out.println(string2);
+
+            // 同じなら成功
+            if (string1.equals(string2))
+                    return true;
+
+            // 各々トークンに分ける
+            st1 = new StringTokenizer(string1);
+            st2 = new StringTokenizer(string2);
+
+            // 数が異なったら失敗
+            if (st1.countTokens() != st2.countTokens())
+                    return false;
+
+            // 定数同士
+            for (int i = 0; i < st1.countTokens();) {
+                    if (!tokenMatching(st1.nextToken(), st2.nextToken())) {
+                            // トークンが一つでもマッチングに失敗したら失敗
+                            return false;
+                    }
+            }
+
+            // 最後まで O.K. なら成功
+            return true;
+    }
+
+    boolean tokenMatching(String token1, String token2) {
+        // トークンが完全一致する場合
+        if (token1.equals(token2)) {
+            return true;
+        }
+        // 片方が変数の場合
+        if (var(token1) && !var(token2)) {
+            return varMatching(token1, token2);
+        }
+        if (!var(token1) && var(token2)) {
+            return varMatching(token2, token1);
+        }
+        // 部分一致の場合
+        if (token1.contains(token2) || token2.contains(token1)) {
+            return true;
+        }
+        return false;
+    }
+    
+	
+	boolean varMatching(String vartoken, String token) {
+	        if (vars.containsKey(vartoken)) {
+	                if (token.equals(vars.get(vartoken))) {
+	                        return true;
+	                } else {
+	                        return false;
+	                }
+	        } else {
+	                vars.put(vartoken, token);
+	        }
+	        return true;
+	}
+	
+	boolean var(String str1) {
+	        // 先頭が ? なら変数
+	        return str1.startsWith("?");
+	}      
+}
 }

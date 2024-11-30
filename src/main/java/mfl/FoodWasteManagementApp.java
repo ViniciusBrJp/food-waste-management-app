@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.thymeleaf.TemplateEngine;
@@ -36,7 +37,7 @@ public class FoodWasteManagementApp {
         JavalinRenderer.register(new JavalinThymeleaf(templateEngine), ".html");
 
         // Javalinアプリの作成
-        Javalin app = Javalin.create().start(50083);
+        Javalin app = Javalin.create().start(50103);
         
         // uploadDirにファイルを保存するディレクトリのパスを指定
         String uploadDir = "src/main/resources/uploads/";
@@ -170,7 +171,40 @@ public class FoodWasteManagementApp {
                 ctx.status(404).result("Image not found");
             }
         });
+
+        app.get("/search", ctx -> {
+            ctx.render("/search.html");
+        });
+
+        app.post("/search", ctx -> {
+            String keyword = ctx.formParam("keyword"); // フォームからキーワードを取得
+            List<Ingredient> searchResults = fwm.searchByKeyword(keyword); // Matcher を用いた検索
         
+            if (!searchResults.isEmpty()) {
+                Map<String, Object> model = new HashMap<>();
+                model.put("results", searchResults);
+                ctx.sessionAttribute("searchResults", model); // 結果をセッションに保存
+                ctx.redirect("/found");
+            } else {
+                ctx.redirect("/notfound");
+            }
+        });
+        
+
+
+        app.get("/found", ctx -> {
+            Map<String, Object> model = ctx.sessionAttribute("searchResults");
+            if (model != null) {
+                ctx.render("/found.html", model);
+            } else {
+                ctx.redirect("/notfound");
+            }
+        });
+
+        app.get("/notfound", ctx -> {
+            ctx.render("/notfound.html");
+        });
+
     }
     
     public static String datechange(String date) {
