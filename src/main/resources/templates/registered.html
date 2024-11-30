@@ -98,7 +98,6 @@
         .image-container img {
             max-width: 100%;
             max-height: 100%;
-            display: none;
         }
 
         .form-fields {
@@ -142,7 +141,13 @@
                 <!--画像を"アップロード"する部分がinput-->
                 <!--<input type="file" id="product-image" name="product-image" accept="image/*" onchange="previewImage(event)"> -->
                 <!--画像を"出力"する部分がimg-->
-                <img id="image-preview" alt="商品画像プレビュー" th:src="@{${productImageUrl}}">
+                <!--
+                <img id="image-preview" alt="商品画像プレビュー" th:src="@{${productImageUrl}}"> 
+                -->
+                <!--
+                <img th:src="@{/images/src/main/resources/uploads/carrot.jpg}" alt="商品画像プレビュー" style="width: 200px; height: auto;"/>
+                -->
+                <img th:src="@{/images/{filename}(filename=${file_name})}" alt="商品画像プレビュー" style="max-width: 100%; max-height: 300px; width: auto; height: auto;"/>
             </div>
             <!-- 右側の入力フィールド 埋め込む-->
             <div class="form-fields">
