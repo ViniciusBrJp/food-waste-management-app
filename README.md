@@ -1,6 +1,7 @@
 # food-waste-management-app
 
 
+
 ## Issue & Pull Request Prefix Guide
 
 このプロジェクトでは、IssueやPull Requestのタイトルに以下のPrefix（プレフィックス）を使用し、Issue番号も含めることで内容を明確に分類します。
