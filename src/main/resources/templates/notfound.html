@@ -1,12 +1,54 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索結果なし</title>
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+        }
+        .nav {
+          margin-left: auto;
+        }
+        .nav a {
+          color: white;
+          text-decoration: none;
+          margin: 0 15px;
+          font-size: 24px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 5px 0;
+        }
+    </style>
 </head>
 <body>
+    <header class="header">
+        <h1>食品ロス管理アプリ</h1>
+        <nav class="nav">
+            <a href="/fwm">ホーム</a>
+            <a href="/register">商品登録</a>
+            <a href="#recipe">レシピ</a>
+      </nav>
+    </header>
+
     <h1>検索結果なし</h1>
     <p>条件に一致する商品が見つかりませんでした。</p>
     <a href="/search">再検索</a>
+
+    <footer class="footer">
+        <p>知能プログラミング演習Ⅱ グループ04</p>
+    </footer>
 </body>
 </html>
