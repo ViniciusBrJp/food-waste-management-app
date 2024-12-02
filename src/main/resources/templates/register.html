@@ -5,90 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品登録画面</title>
     <style>
-        .header {
-            background-color: #ffffff;
-            padding: 20px;
-            padding-bottom: 5px;
-            align-items: flex-start;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            height: 50px;
-            display: block;
-            margin-left: 20px;
-        }
-
-        .nav {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav a {
-            font-size: 18px;
-        }
-
-        .header-hover-color {
-            margin-top: 14px;
-            margin-left: auto;
-        }
-
-        .header-hover-color a:hover {
-            color: #1abc28;
-        }
-
-        .active a {
-            font-weight: bold;
-            color: #007bff;
-        }
-
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background-color: #e0f7fa;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .nav {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header .nav a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .header .nav a:hover {
+            color: #0056b3;
+        }
+
+        .header .nav .active a {
+            font-weight: bold;
+            color: #004085;
         }
 
         .container {
-            max-width: 800px;
-            margin: auto;
-            border: 1px solid #ccc;
+            max-width: 900px;
+            margin: 30px auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            color: #004d40;
         }
 
         .form-layout {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
         }
 
         .image-container {
             flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #f0f0f0;
-            border: 1px dashed #ccc;
+            background-color: #e0f7fa;
+            border: 2px dashed #007bff;
+            border-radius: 8px;
             height: 300px;
             text-align: center;
-            font-size: 14px;
-            color: #888;
-            position: relative;
-            cursor: pointer; /* 画像枠をクリック可能にする */
-        }
-
-        .image-container input[type="file"] {
-            display: none; /* ファイル入力フィールドを非表示にする */
+            color: #004085;
+            cursor: pointer;
         }
 
         .image-container img {
@@ -111,25 +100,40 @@
             margin-bottom: 5px;
         }
 
-        .form-group input, .form-group select, .form-group button {
+        .form-group.required label {
+            font-weight: bold;
+            color: #d32f2f; /* 必須項目を赤色で強調 */
+        }
+
+        .form-group.required input {
+            border: 2px solid #d32f2f;
+            background-color: #fff5f5;
+        }
+
+        .form-group.required input:focus {
+            border-color: #f44336;
+            background-color: #ffe0e0;
+        }
+
+        .required-asterisk {
+            color: #d32f2f;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group button {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             font-size: 16px;
             box-sizing: border-box;
-        }
-
-        .form-group select {
-            width: 100%;
-        }
-
-        .form-group select option {
-            width: auto;
-            min-width: 150px;
-            max-width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         .form-group button {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
@@ -141,73 +145,81 @@
         }
 
         .form-group button:hover:enabled {
-            background-color: #45a049;
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border-top: 1px solid #ddd;
+            color: #004085;
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="container">
-            <ul class="nav">
-                <li class="header-hover-color"><a href="/fwm">ホーム</a></li>
-                <li class="header-hover-color active"><a href="/register">商品登録</a></li>
-                <li class="header-hover-color active"><a href="#recipe">レシピ</a></li>
-            </ul>
-        </div>
+        <ul class="nav">
+            <li><a href="/fwm">ホーム</a></li>
+            <li class="active"><a href="/register">商品登録</a></li>
+            <li><a href="#recipe">レシピ</a></li>
+        </ul>
     </header>
     
     <div class="container">
         <h1>商品登録</h1>
         <form id="product-form" action="/register" method="post" enctype="multipart/form-data">
             <div class="form-layout">
-                <!-- 左側の画像プレビュー -->
-                <div class="image-container" onclick="document.getElementById('product-image').click()">
+                <div class="image-container">
                     <span>商品画像をアップロード</span>
-                    <!--画像を"アップロード"する部分がinput-->
-                    <input type="file" id="product-image" name="product-image" accept="image/*" onchange="previewImage(event); checkForm();">
-                    <!--画像を出力する部分がimg-->
-                    <img id="image-preview" alt="商品画像プレビュー">
+                    <input type="file" id="product-image" name="product-image" accept="image/*" style="display: none;">
+                    <img id="image-preview" alt="商品画像プレビュー" style="display: none;">
                 </div>
-                <!-- 右側の入力フィールド -->
                 <div class="form-fields">
-                    <div class="form-group">
-                        <label for="product-name">商品名</label>
+                    <div class="form-group required">
+                        <label for="product-name">商品名 <span class="required-asterisk">*</span></label>
                         <input type="text" id="product-name" name="product-name" placeholder="商品名を入力" oninput="checkForm()">
                     </div>
-                    <div class="form-group">
-                        <label for="ingredient-name">食材名</label>
+                    <div class="form-group required">
+                        <label for="ingredient-name">食材名 <span class="required-asterisk">*</span></label>
                         <input type="text" id="ingredient-name" name="ingredient-name" placeholder="食材名を入力" oninput="checkForm()">
+                    </div>
+                    <div class="form-group required">
+                        <label for="expiry-date">期限 <span class="required-asterisk">*</span></label>
+                        <input type="date" id="expiry-date" name="expiry-date" oninput="checkForm()">
                     </div>
                     <div class="form-group">
                         <label for="purchase-date">購入日</label>
                         <input type="date" id="purchase-date" name="purchase-date" oninput="checkForm()">
                     </div>
                     <div class="form-group">
-                        <label for="expiry-date">期限</label>
-                        <input type="date" id="expiry-date" name="expiry-date" oninput="checkForm()">
-                    </div>
-                    <div class="form-group">
                         <label for="category">カテゴリー</label>
                         <select name="category" id="category" onchange="checkForm()">
                             <option value="" disabled selected>カテゴリーを選択</option>
-                            <optgroup label="カテゴリー">
-                                <option value="穀類">穀類</option>
-                                <option value="いも及びでん粉類">いも及びでん粉類</option>
-                                <option value="砂糖及び甘味類">砂糖及び甘味類</option>
-                                <option value="豆類">豆類</option>
-                                <option value="種実類">種実類</option>
-                                <option value="野菜類">野菜類</option>
-                                <option value="きのこ類">きのこ類</option>
-                                <option value="藻類">藻類</option>
-                                <option value="魚介類">魚介類</option>
-                                <option value="肉類">肉類</option>
-                                <option value="卵類">卵類</option>
-                                <option value="乳類">乳類</option>
-                                <option value="油脂類">油脂類</option>
-                                <option value="菓子類">菓子類</option>
-                                <option value="飲料類">飲料類</option>
-                                <option value="調味料類">調味料類</option>
-                                <option value="その他">その他</option>
+                            <optgroup label="主食">
+                                <option value="穀物">穀物（ごはん、パン、麺類）</option>
+                                <option value="芋類">芋類（じゃがいも、さつまいも）</option>
+                            </optgroup>
+                            <optgroup label="タンパク質">
+                                <option value="肉類">肉類（鶏肉、牛肉、豚肉）</option>
+                                <option value="魚介類">魚介類（魚、貝、エビ）</option>
+                                <option value="卵類">卵類（卵、卵製品）</option>
+                                <option value="豆類">豆類（豆腐、納豆、枝豆）</option>
+                            </optgroup>
+                            <optgroup label="野菜・果物">
+                                <option value="野菜">野菜（キャベツ、トマト、にんじん）</option>
+                                <option value="果物">果物（りんご、みかん、バナナ）</option>
+                                <option value="きのこ類">きのこ類（しいたけ、しめじ、エリンギ）</option>
+                            </optgroup>
+                            <optgroup label="乳製品・脂質">
+                                <option value="乳製品">乳製品（牛乳、チーズ、ヨーグルト）</option>
+                                <option value="油脂類">油脂類（バター、サラダ油）</option>
+                            </optgroup>
+                            <optgroup label="調味料・その他">
+                                <option value="調味料">調味料（醤油、塩、砂糖）</option>
+                                <option value="菓子類">菓子類（お菓子、デザート）</option>
+                                <option value="飲料類">飲料類（お茶、ジュース、コーヒー）</option>
+                                <option value="その他">その他（分類に該当しないもの）</option>
                             </optgroup>
                         </select>
                     </div>
@@ -218,35 +230,41 @@
             </div>
         </form>
     </div>
+    <footer>
+        <p>知能プログラミング演習Ⅱ グループ04</p>
+      </footer>
     <script>
-        // 画像プレビュー
-        // inputで入力したファイルをimg要素に渡してプレビュー表示
+        document.querySelector('.image-container').addEventListener('click', function (event) {
+            document.getElementById('product-image').click();
+        });
+
+        document.getElementById('product-image').addEventListener('change', function (event) {
+            previewImage(event);
+            checkForm();
+        });
+
         function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('image-preview');
+            const fileInput = event.target;
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const output = document.getElementById('image-preview');
                 output.src = reader.result;
                 output.style.display = 'block';
             };
-            reader.readAsDataURL(event.target.files[0]);
+
+            if (fileInput.files && fileInput.files[0]) {
+                reader.readAsDataURL(fileInput.files[0]);
+            }
         }
 
-        // ボタンアクティブ条件
         function checkForm() {
-            var productName = document.getElementById('product-name').value;
-            var ingredientName = document.getElementById('ingredient-name').value;
-            var purchaseDate = document.getElementById('purchase-date').value;
-            var expiryDate = document.getElementById('expiry-date').value;
-            var category = document.getElementById('category').value;
-            var puroductImage = document.getElementById('product-image').files.length > 0;
+            const productName = document.getElementById('product-name').value;
+            const ingredientName = document.getElementById('ingredient-name').value;
+            const expiryDate = document.getElementById('expiry-date').value;
+            const submitButton = document.getElementById('submit-button');
 
-            var submitButton = document.getElementById('submit-button');
-            // ifの中の３つが必須条件
-            if (productName && ingredientName && expiryDate) {
-                submitButton.disabled = false;
-            } else {
-                submitButton.disabled = true;
-            }
+            submitButton.disabled = !(productName && ingredientName && expiryDate);
         }
     </script>
 </body>
