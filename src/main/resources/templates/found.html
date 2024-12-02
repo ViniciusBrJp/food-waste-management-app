@@ -5,40 +5,69 @@
     <title>検索結果</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  </head>
-  <body>
-    <header>
-      <style>
-        header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background-color: #4CAF50;
-          color: white;
-          padding: 10px 20px;
+    <style>
+      body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
         }
-        nav {
-          margin-left: auto;
+
+        .header {
+            background-color: #e0f7fa;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        nav a {
-          color: white;
-          text-decoration: none;
-          margin: 0 15px;
-          font-size: 24px;
+
+        .header .title{
+            color:#004085;
         }
+
+        .header .nav {
+            margin-left: auto;
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0 15px;
+            padding: 0;
+        }
+
+        .header .nav a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .header .nav a:hover {
+            color: #0056b3;
+        }
+        
         footer {
-          background-color: #333;
-          color: white;
-          text-align: center;
-          padding: 10px 0;
+            text-align: center;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border-top: 1px solid #ddd;
+            color: #004085;
         }
-      </style>
-      <h1>検索結果</h1>
-      <nav>
-        <a href="/fwm">ホーム</a>
-        <a href="/register">商品登録</a>
-        <a href="#recipe">レシピ</a>
-      </nav>
+    </style>
+  </head>
+  
+  <body>
+    <header class="header">
+      <h1 class="title">食品ロス管理アプリ</h1>
+      <ul class="nav">
+        <li><a href="/fwm">ホーム</a></li>
+        <li><a href="/register">商品登録</a></li>
+    </ul>
+
+    <!-- 検索フォームを追加 -->
+      <form class="search-form" action="/search" method="post">
+        <input type="text" name="keyword" placeholder="検索キーワード" required />
+        <button type="submit" class="btn btn-light">検索</button>
+      </form>
     </header>
 
     <div class="container">
