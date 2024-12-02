@@ -1,12 +1,110 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>検索結果なし</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%; 
+            background-color: #f8f9fa;
+            color: #333;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #e0f7fa;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .title{
+            color:#004085;
+        }
+
+        .header .nav {
+            margin-left: auto;
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0 15px;
+            padding: 0;
+        }
+
+        .header .nav a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .header .nav a:hover {
+            color: #0056b3;
+        }
+
+        .container {
+            text-align: center;
+            min-height: 100%;
+            flex: 1;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1{
+            color: #004d40;
+        }
+
+        .container a{
+            display: inline-block; /* ボタン風にするための設定 */
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border-top: 1px solid #ddd;
+            color: #004085;
+        }
+    </style>
 </head>
 <body>
-    <h1>検索結果なし</h1>
-    <p>条件に一致する商品が見つかりませんでした。</p>
-    <a href="/search">再検索</a>
+    <header class="header">
+        <h1>食品ロス管理アプリ</h1>
+        <ul class="nav">
+            <li><a href="/fwm">ホーム</a></li>
+            <li><a href="/register">商品登録</a></li>
+        </ul>
+      <!-- 検索フォームを追加 -->
+      <form class="search-form" action="/search" method="post">
+        <input type="text" name="keyword" placeholder="検索キーワード" required />
+        <button type="submit" class="btn btn-light">検索</button>
+      </form>
+    </header>
+
+    <div class="container">
+        <h1>検索結果なし</h1>
+        <p>条件に一致する商品が見つかりませんでした。</p>
+        <a href="/search">再検索</a>
+    </div>
+    
+    <footer class="footer">
+        <p>知能プログラミング演習Ⅱ グループ04</p>
+    </footer>
 </body>
 </html>
