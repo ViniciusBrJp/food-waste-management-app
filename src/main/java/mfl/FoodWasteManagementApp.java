@@ -85,7 +85,7 @@ public class FoodWasteManagementApp {
             if (uploadedFile != null) {
                 try {
                 	file_name = uploadedFile.filename();
-                	System.out.println("ファイル名: " + file_name);
+                	//System.out.println("ファイル名: " + file_name);
                 	if(file_name.isEmpty()) {
                 	    file_name = "noimage.png";
                 	}
@@ -170,7 +170,7 @@ public class FoodWasteManagementApp {
                 ctx.contentType("image/" + extension); // 必要に応じて適切なContent-Typeを設定 (例: "image/png")
                 ctx.result(Files.newInputStream(imagePath));
 
-                System.out.println("画像ファイルを提供: " + imagePath);
+                //System.out.println("画像ファイルを提供: " + imagePath);
             } else {
                 ctx.status(404).result("Image not found");
             }
