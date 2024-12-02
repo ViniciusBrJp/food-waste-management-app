@@ -215,8 +215,6 @@ public class FoodWasteManagementApp {
             }
         });
         
-
-
         app.get("/found", ctx -> {
             Map<String, Object> model = ctx.sessionAttribute("searchResults");
             if (model != null) {
@@ -230,6 +228,14 @@ public class FoodWasteManagementApp {
             ctx.render("/notfound.html");
         });
 
+        app.get("/filter", ctx -> {
+            String category = ctx.queryParam("category"); // 選択されたカテゴリを取得
+            List<Ingredient> filteredIngs = fwm.getIngsByCategory(category); // カテゴリでフィルタリング
+            Map<String, Object> model = new HashMap<>();
+            model.put("filteredIngs", filteredIngs);
+            ctx.render("/filtered.html", model); // 新しいページへデータを渡す
+        });
+        
     }
     
     public static String datechange(String date) {
