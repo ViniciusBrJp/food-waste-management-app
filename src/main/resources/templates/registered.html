@@ -6,55 +6,19 @@
     <title>商品登録済み画面</title>
     <style>
         .header {
-            /*
             background-color: #ffffff;
             padding: 20px;
-            */
-            padding-bottom: 6px;
-            /*
+            padding-bottom: 5px;
             align-items: flex-start;
-            */
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            height: 50px;
-            display: block;
-            margin-left: 20px;
-        }
-
-        .nav {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav a {
-            font-size: 18px;
         }
 
         .header-hover-color {
-            margin-top: 10px;
+            margin-top: 14px;
             margin-left: auto;
         }
 
         .header-hover-color a:hover {
             color: #1abc28;
-        }
-
-        .active a {
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
         }
 
         .container {
@@ -88,11 +52,6 @@
             font-size: 14px;
             color: #888;
             position: relative;
-            cursor: pointer; /* 画像枠をクリック可能にする */
-        }
-
-        .image-container input[type="file"] {
-            display: none; /* ファイル入力フィールドを非表示にする */
         }
 
         .image-container img {
@@ -114,11 +73,27 @@
             margin-bottom: 5px;
         }
 
-        .form-group input{
+        .form-group input {
             width: 100%;
             padding: 8px;
             font-size: 16px;
             box-sizing: border-box;
+        }
+
+        .form-group input:disabled {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
         }
     </style>
 </head>
@@ -129,80 +104,77 @@
             <ul class="nav">
                 <li class="header-hover-color"><a href="/fwm">ホーム</a></li>
                 <li class="header-hover-color active"><a href="/register">商品登録</a></li>
-                <li class="header-hover-color"><a href="#recipe">レシピ</a></li>
+                <li class="header-hover-color active"><a href="#recipe">レシピ</a></li>
             </ul>
         </div>
     </header>
-    <div class="container"> <!--同じcontainerを使うことで境目のようなものができる-->
-        <h1>商品登録</h1>
-        <div class="form-layout">
-            <!-- 左側の画像プレビュー 画像の埋め込み方が微妙-->
-            <div class="image-container">
-                <!--画像を"アップロード"する部分がinput-->
-                <!--<input type="file" id="product-image" name="product-image" accept="image/*" onchange="previewImage(event)"> -->
-                <!--画像を"出力"する部分がimg-->
-                <!--
-                <img id="image-preview" alt="商品画像プレビュー" th:src="@{${productImageUrl}}"> 
-                -->
-                <!--
-                <img th:src="@{/images/src/main/resources/uploads/carrot.jpg}" alt="商品画像プレビュー" style="width: 200px; height: auto;"/>
-                -->
-                <img th:src="@{/images/{filename}(filename=${file_name})}" alt="商品画像プレビュー" style="max-width: 100%; max-height: 300px; width: auto; height: auto;"/>
-            </div>
-            <!-- 右側の入力フィールド 埋め込む-->
-            <div class="form-fields">
-                <div class="form-group">
-                    <label for="product-name">商品名</label>
-                    <input type="text" id="product-name" name="product-name" th:value="${product_name}" readonly>
+    
+    <div class="container">
+        <h1>商品登録済み</h1>
+        <form action="/edit" method="post" id="edit-form">
+            <div class="form-layout">
+                <!-- 画像プレビュー -->
+                <div class="image-container">
+                    <img th:src="@{/images/{filename}(filename=${file_name})}" alt="商品画像プレビュー">
                 </div>
-                <div class="form-group">
-                    <label for="ingredient-name">食材名</label>
-                    <input type="text" id="ingredient-name" name="ingredient-name" th:value="${ingredient_name}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="purchase-date">購入日</label>
-                    <input type="date" id="purchase-date" name="purchase-date" th:value="${purchase_date}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="expiry-date">期限</label>
-                    <input type="date" id="expiry-date" name="expiry-date" th:value="${expiry_date}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="category">カテゴリー</label>
-                    <input type="text" id="category" name="category" th:value="${category}" readonly>
+                <!-- 入力フィールド -->
+                <div class="form-fields">
+                    <!-- 隠しフィールドでIDを保持 -->
+                    <input type="hidden" name="id" th:value="${id}">
+                    <div class="form-group">
+                        <label for="product-name">商品名</label>
+                        <input type="text" id="product-name" name="product-name" th:value="${product_name}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="ingredient-name">食材名</label>
+                        <input type="text" id="ingredient-name" name="ingredient-name" th:value="${ingredient_name}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase-date">購入日</label>
+                        <input type="date" id="purchase-date" name="purchase-date" th:value="${purchase_date}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry-date">期限</label>
+                        <input type="date" id="expiry-date" name="expiry-date" th:value="${expiry_date}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">カテゴリー</label>
+                        <input type="text" id="category" name="category" th:value="${category}" disabled>
+                    </div>
                 </div>
             </div>
-        </div>
+            <!-- ボタン -->
+            <div class="buttons">
+                <button type="button" id="edit-button">編集</button>
+                <button type="submit" id="save-button" style="display: none;">保存</button>
+                <button type="button" id="cancel-button" style="display: none;">キャンセル</button>
+            </div>
+        </form>
     </div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var purchaseDate = document.getElementById('purchase-date');
-            var expiryDate = document.getElementById('expiry-date');
+        document.addEventListener("DOMContentLoaded", function () {
+            const editButton = document.getElementById("edit-button");
+            const saveButton = document.getElementById("save-button");
+            const cancelButton = document.getElementById("cancel-button");
+            const formFields = document.querySelectorAll(".form-fields input");
 
-            if (!purchaseDate.value) {
-                // type=dateのデフォルトyyyy/mm/ddを消すため
-                purchaseDate.type = 'text';
-            }
+            // 編集ボタンのクリックイベント
+            editButton.addEventListener("click", function () {
+                formFields.forEach(field => field.disabled = false);
+                editButton.style.display = "none";
+                saveButton.style.display = "inline-block";
+                cancelButton.style.display = "inline-block";
+            });
 
-            if (!expiryDate.value) {
-                // type=dateのデフォルトyyyy/mm/ddを消すため
-                expiryDate.type = 'text';
-            }
+            // キャンセルボタンのクリックイベント
+            cancelButton.addEventListener("click", function () {
+                formFields.forEach(field => field.disabled = true);
+                editButton.style.display = "inline-block";
+                saveButton.style.display = "none";
+                cancelButton.style.display = "none";
+            });
         });
-        
-        /*
-        // 画像プレビュー
-        // inputで入力したファイルをimg要素に渡してプレビュー表示
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('image-preview');
-                output.src = reader.result;
-                output.style.display = 'block';
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-        */
     </script>
 </body>
 </html>
