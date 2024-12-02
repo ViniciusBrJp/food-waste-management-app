@@ -136,6 +136,27 @@ public class FWM {
         addIng(new Ingredient("radish.jpg", "大根", "大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter), "野菜類"));
         addIng(new Ingredient("greenpepper.jpg", "ピーマン", "ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter), "野菜類"));
     }
+
+    // Ingredient更新
+    public void updateIng(Ingredient ing) {
+        try {
+            Connection conn = Database.getConnection();
+            PreparedStatement ps = conn.prepareStatement(
+                "UPDATE ingredients SET pname = ?, iname = ?, pdate = ?, edate = ?, category = ? WHERE id = ?"
+            );
+            ps.setString(1, ing.getPName());
+            ps.setString(2, ing.getIName());
+            ps.setString(3, ing.getPdate());
+            ps.setString(4, ing.getEdate());
+            ps.setString(5, ing.getCategory());
+            ps.setInt(6, ing.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     
     //賞味期限の近い食材を取得
 	public List<Ingredient> getExpiringIngs(int days) {

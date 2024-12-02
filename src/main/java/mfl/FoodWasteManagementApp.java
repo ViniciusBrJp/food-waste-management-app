@@ -109,39 +109,45 @@ public class FoodWasteManagementApp {
         });
 
         app.get("/registered", ctx -> {
-
             Map<String, Object> model = new HashMap<>();
-            
+        
             // URLパラメータからidを取得
-            String id = ctx.queryParam("id");
-            
-            //idから食材情報を取得
-            Ingredient ing = fwm.getIng(Integer.parseInt(id));
-
-            // ingからデータを取得
-            String fileName = ing.getFName();
-            String productName = ing.getPName();
-            String ingredientName = ing.getIName();
-            String purchaseDate = ing.getPdate();
-            String expiryDate = ing.getEdate();
-            String category = ing.getCategory();
-
-            // pdateは"yyyy//mm/dd"の形
-
-            // 日付の変換 /から-へ
-            purchaseDate = datechange(purchaseDate);
-            expiryDate = datechange(expiryDate);
-
-            // データをモデルに追加
-            model.put("file_name", fileName);
-            model.put("product_name", productName);
-            model.put("ingredient_name", ingredientName);
-            model.put("purchase_date", purchaseDate);
-            model.put("expiry_date", expiryDate);
-            model.put("category", category);
-            
-            ctx.render("/registered.html", model);
+            String idParam = ctx.queryParam("id");
+        
+            // パラメータが空または無効な場合にエラーハンドリング
+            if (idParam == null || idParam.isEmpty()) {
+                ctx.status(400).result("Invalid or missing ID parameter");
+                return;
+            }
+        
+            try {
+                int id = Integer.parseInt(idParam);
+        
+                // IDから食材情報を取得
+                Ingredient ing = fwm.getIng(id);
+        
+                if (ing == null) {
+                    ctx.status(404).result("Ingredient not found");
+                    return;
+                }
+        
+                // データをモデルに追加
+                model.put("id", id);
+                model.put("file_name", ing.getFName());
+                model.put("product_name", ing.getPName());
+                model.put("ingredient_name", ing.getIName());
+                model.put("purchase_date", datechange(ing.getPdate()));
+                model.put("expiry_date", datechange(ing.getEdate()));
+                model.put("category", ing.getCategory());
+        
+                ctx.render("/registered.html", model);
+        
+            } catch (NumberFormatException e) {
+                // IDが整数ではない場合の処理
+                ctx.status(400).result("Invalid ID format");
+            }
         });
+        
         
         //削除機能
         app.get("/delete", ctx -> {
@@ -155,6 +161,25 @@ public class FoodWasteManagementApp {
         
             ctx.redirect("/fwm"); // ホームページにリダイレクト
         });
+
+        app.post("/edit", ctx -> {
+            // フォームデータを取得
+            int id = Integer.parseInt(ctx.formParam("id"));
+            String productName = ctx.formParam("product-name");
+            String ingredientName = ctx.formParam("ingredient-name");
+            String purchaseDate = ctx.formParam("purchase-date");
+            String expiryDate = ctx.formParam("expiry-date");
+            String category = ctx.formParam("category");
+        
+            // データベースの更新
+            Ingredient updatedIng = new Ingredient("noimage.png", productName, ingredientName, purchaseDate, expiryDate, category);
+            updatedIng.setId(id); // 更新する行のIDを設定
+            fwm.updateIng(updatedIng);
+        
+            ctx.redirect("/fwm");
+        });
+        
+        
         
         // 画像ファイルを提供
         app.get("/images/{filename}", ctx -> {
