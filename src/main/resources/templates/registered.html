@@ -179,21 +179,50 @@ http://www.thymeleaf.org">
                         <input type="text" id="ingredient-name" name="ingredient-name" th:value="${ingredient_name}" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="purchase-date">購入日</label>
-                        <input type="date" id="purchase-date" name="purchase-date" th:value="${purchase_date}" disabled>
-                    </div>
-                    <div class="form-group">
                         <label for="expiry-date">期限</label>
                         <input type="date" id="expiry-date" name="expiry-date" th:value="${expiry_date}" disabled>
                     </div>
                     <div class="form-group">
+                        <label for="purchase-date">購入日</label>
+                        <input type="date" id="purchase-date" name="purchase-date" th:value="${purchase_date}" disabled>
+                    </div>
+                    <div class="form-group">
                         <label for="category">カテゴリー</label>
-                        <input type="text" id="category" name="category" th:value="${category}" disabled>
+                        <!-- <input type="text" id="category" name="category" th:value="${category}" disabled> -->
+                        <select name="category" id="category" disabled>
+                            <option value="" disabled selected>カテゴリーを選択</option>
+                            <optgroup label="主食">
+                                <option value="穀物" th:selected="${category == '穀物'}">穀物（ごはん、パン、麺類）</option>
+                                <option value="芋類" th:selected="${category == '芋類'}">芋類（じゃがいも、さつまいも）</option>
+                            </optgroup>
+                            <optgroup label="タンパク質">
+                                <option value="肉類" th:selected="${category == '肉類'}">肉類（鶏肉、牛肉、豚肉）</option>
+                                <option value="魚介類" th:selected="${category == '魚介類'}">魚介類（魚、貝、エビ）</option>
+                                <option value="卵類" th:selected="${category == '卵類'}">卵類（卵、卵製品）</option>
+                                <option value="豆類" th:selected="${category == '豆類'}">豆類（豆腐、納豆、枝豆）</option>
+                            </optgroup>
+                            <optgroup label="野菜・果物">
+                                <option value="野菜" th:selected="${category == '野菜'}">野菜（キャベツ、トマト、にんじん）</option>
+                                <option value="果物" th:selected="${category == '果物'}">果物（りんご、みかん、バナナ）</option>
+                                <option value="きのこ類" th:selected="${category == 'きのこ類'}">きのこ類（しいたけ、しめじ、エリンギ）</option>
+                            </optgroup>
+                            <optgroup label="乳製品・脂質">
+                                <option value="乳製品" th:selected="${category == '乳製品'}">乳製品（牛乳、チーズ、ヨーグルト）</option>
+                                <option value="油脂類" th:selected="${category == '油脂類'}">油脂類（バター、サラダ油）</option>
+                            </optgroup>
+                            <optgroup label="調味料・その他">
+                                <option value="調味料" th:selected="${category == '調味料'}">調味料（醤油、塩、砂糖）</option>
+                                <option value="菓子類" th:selected="${category == '菓子類'}">菓子類（お菓子、デザート）</option>
+                                <option value="飲料類" th:selected="${category == '飲料類'}">飲料類（お茶、ジュース、コーヒー）</option>
+                                <option value="その他" th:selected="${category == 'その他'}">その他（分類に該当しないもの）</option>
+                            </optgroup>
+                        </select>
+
                     </div>
                     <!-- ボタン -->
                     <div class="form-group">
                         <button type="button" id="edit-button" class="botton1">編集</button>
-                        <button type="submit" id="save-button" class="botton1" style="display: none;">保存</button>
+                        <button type="submit" id="save-button" class="botton1" style="display: none;" disabled>保存</button>
                         <button type="button" id="cancel-button" style="display: none;">キャンセル</button>
                     </div>
                 </div>
@@ -212,22 +241,57 @@ http://www.thymeleaf.org">
             const saveButton = document.getElementById("save-button");
             const cancelButton = document.getElementById("cancel-button");
             const formFields = document.querySelectorAll(".form-fields input");
+            var productName = document.getElementById('product-name');
+            var ingredientName = document.getElementById('ingredient-name');
+            var expiryDate = document.getElementById('expiry-date');
+            var purchaseDate = document.getElementById('purchase-date');
+            var category = document.getElementById('category');
+
+            // 編集ボタンを押す前の値を保持
+            var originalValues = {
+                productName: productName.value,
+                ingredientName: ingredientName.value,
+                expiryDate: expiryDate.value,
+                purchaseDate: purchaseDate.value,
+                category: category.value
+            };
 
             // 編集ボタンのクリックイベント
             editButton.addEventListener("click", function () {
-                formFields.forEach(field => field.disabled = false);
-                editButton.style.display = "none";
-                saveButton.style.display = "inline-block";
-                cancelButton.style.display = "inline-block";
+                formFields.forEach(field => field.disabled = false); // ".form-fields input"の部分を編集可能にする
+                category.disabled = false;
+                editButton.style.display = "none"; // 編集ボタンを非表示
+                saveButton.style.display = "inline-block"; // 保存ボタンを表示
+                cancelButton.style.display = "inline-block"; // キャンセルボタンを表示
             });
 
             // キャンセルボタンのクリックイベント
             cancelButton.addEventListener("click", function () {
-                formFields.forEach(field => field.disabled = true);
+                formFields.forEach(field => field.disabled = true); // ".form-fields input"の部分を編集不可にする
+                category.disabled = true;
                 editButton.style.display = "inline-block";
                 saveButton.style.display = "none";
                 cancelButton.style.display = "none";
+                productName.value = originalValues.productName;
+                ingredientName.value = originalValues.ingredientName;
+                expiryDate.value = originalValues.expiryDate;
+                purchaseDate.value = originalValues.purchaseDate;
+                category.value = originalValues.category;
             });
+
+            function checkInput() {
+                if (productName.value && ingredientName.value && expiryDate.value) {
+                    saveButton.disabled = false;
+                } else {
+                    saveButton.disabled = true;
+                }
+            }
+
+            productName.addEventListener('input', checkInput);
+            ingredientName.addEventListener('input', checkInput);
+            expiryDate.addEventListener('input', checkInput);
+            purchaseDate.addEventListener('input', checkInput);
+            category.addEventListener('change', checkInput);
         });
     </script>
 </body>
