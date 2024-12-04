@@ -88,6 +88,7 @@
 						<img th:src="@{/images/{filename}(filename=${result.getFName()})}" alt="商品画像" style="width: 200px; height: auto;" />
 					</a>
 				</td>
+        
 				<td><a th:href="@{/delete(id=${result.getId()})}">削除</a></td>
 				<td th:text="${result.getPName()}"></td>
 				<td th:text="${result.getPdate()}"></td>
