@@ -232,9 +232,11 @@
               </a>
             </td>
             <td>
-              <button class="icon-btn">
+              <!-- <button class="icon-btn"> -->
+              <a th:href="@{/delete(id=${ing.getId()})}" class="icon-btn">
                 <i class="fas fa-trash-alt"></i> 削除
-              </button>
+              </a>
+              <!-- </button> -->
             </td>
             <td th:text="${ing.getPName()}"></td>
             <td th:text="${ing.getPdate()}"></td>
@@ -263,9 +265,11 @@
                 </a>
               </td>
               <td>
-                <button class="icon-btn">
+                <!-- <button class="icon-btn"> -->
+                <a th:href="@{/delete(id=${ing.getId()})}" class="icon-btn">
                   <i class="fas fa-trash-alt"></i> 削除
-                </button>
+                </a>
+                <!-- </button> -->
               </td>
               <td th:text="${ing.getPName()}"></td>
               <td th:text="${ing.getPdate()}"></td>
