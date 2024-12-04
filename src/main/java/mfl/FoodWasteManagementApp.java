@@ -77,7 +77,7 @@ public class FoodWasteManagementApp {
             String expiry_date = ctx.formParam("expiry-date"); // 賞味期限
             String category = ctx.formParam("category"); // カテゴリ
             
-            String file_name = "noimage.png"; //ファイル名の初期値
+            String file_name = ""; //ファイル名
 
             // uploadedFileオブジェクトにはファイル名("11305.jpg"のような"/"を含まない形)、
             //*
@@ -85,7 +85,11 @@ public class FoodWasteManagementApp {
             if (uploadedFile != null) {
                 try {
                 	file_name = uploadedFile.filename();
-
+                	//System.out.println("ファイル名: " + file_name);
+                	if(file_name.isEmpty()) {
+                	    file_name = "noimage.png";
+                	}
+                	
                     // 保存するファイルのパスを指定
                     File file = new File(uploadDir + file_name); // uploads/touhu.jpg
                     
