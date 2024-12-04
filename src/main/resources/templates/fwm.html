@@ -2,70 +2,226 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>食品ロス管理アプリ</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #e0f7fa; /* 薄い青色 */
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #0288d1; /* 冷蔵庫のようなクールな青 */
+        padding: 15px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header .title {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .header .nav {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header .nav a {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 16px;
+        transition: color 0.3s;
+      }
+
+      .header .nav a:hover {
+        color: #ffdd57;
+      }
+
+      .header .nav .active a {
+        font-weight: bold;
+        border-bottom: 2px solid #ffdd57;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 20px;
+        background: #ffffff;
+        border: 2px solid #0288d1; /* 冷蔵庫の金属感を意識した青いボーダー */
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .container h1 {
+        text-align: center;
+        color: #004d40;
+      }
+
+      footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #0288d1; /* ヘッダーと同じ青 */
+        border-top: 1px solid #ddd;
+        color: #ffffff;
+      }
+
+      .search-form-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 15px;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .search-form-container input {
+        max-width: 80%;
+        margin-right: 10px;
+      }
+
+      .search-form-container button {
+        max-width: 18%;
+        background-color: #0288d1;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .search-form-container button:hover {
+        background-color: #01579b; /* ボタンにホバーしたときに深い青 */
+      }
+
+      .form-group {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .form-group select, .form-group input {
+        max-width: 300px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th, td {
+        border: 1px solid #0288d1; /* 冷蔵庫の金属感を出すための青い枠線 */
+        padding: 12px;
+        text-align: left;
+      }
+
+      thead {
+        background-color: #0288d1; /* 冷蔵庫の扉の色に合わせた青 */
+        color: white;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* アイコンボタンのスタイル */
+      .icon-btn {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: #0288d1;
+      }
+
+      .icon-btn:hover {
+        color: #01579b;
+      }
+    </style>
   </head>
+
   <body>
-    <header>
-      <style>
-        header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          background-color: #4CAF50;
-          color: white;
-          padding: 10px 20px;
-        }
-        nav {
-          margin-left: auto;
-        }
-        nav a {
-          color: white;
-          text-decoration: none;
-          margin: 0 15px;
-          font-size: 24px;
-        }
-        footer {
-          background-color: #333;
-          color: white;
-          text-align: center;
-          padding: 10px 0;
-        }
-        form.search-form {
-          margin-left: auto;
-          display: flex;
-          align-items: center;
-        }
-        form.search-form input {
-          margin-right: 10px;
-          padding: 5px;
-          font-size: 16px;
-        }
-      </style>
-      <h1>食品ロス管理アプリ</h1>
-      <nav>
-        <a href="/fwm">ホーム</a>
-        <a href="/register">商品登録</a>
-        <a href="#recipe">レシピ</a>
-      </nav>
-      <!-- 検索フォームを追加 -->
-      <form class="search-form" action="/search" method="post">
-        <input type="text" name="keyword" placeholder="検索キーワード" required />
-        <button type="submit" class="btn btn-light">検索</button>
-      </form>
+    <header class="header">
+      <a href="/fwm" class="title">食品ロス管理</a>
+      <ul class="nav">
+        <li class="active"><a href="/fwm">ホーム</a></li>
+        <li><a href="/register">商品登録</a></li>
+      </ul>
     </header>
 
-    <h1>食材一覧</h1>
+    <!-- 検索フォーム -->
+    <div class="search-form-container">
+      <form class="search-form" action="/search" method="post">
+        <input type="text" name="keyword" placeholder="検索キーワード" required />
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-snowflake"></i> 検索
+        </button>
+      </form>
+    </div>
+
     <div class="container">
+      <!-- カテゴリフィルタリングフォーム -->
+      <form action="/filter" method="get">
+        <div class="form-group">
+          <select name="category" id="category" class="selectpicker">
+            <option value="" disabled selected>カテゴリを選択</option>
+            <optgroup label="主食">
+              <option value="穀物">穀物（ごはん、パン、麺類）</option>
+              <option value="芋類">芋類（じゃがいも、さつまいも）</option>
+            </optgroup>
+            <optgroup label="タンパク質">
+              <option value="肉類">肉類（鶏肉、牛肉、豚肉）</option>
+              <option value="魚介類">魚介類（魚、貝、エビ）</option>
+              <option value="卵類">卵類（卵、卵製品）</option>
+              <option value="豆類">豆類（豆腐、納豆、枝豆）</option>
+            </optgroup>
+            <optgroup label="野菜・果物">
+              <option value="野菜">野菜（キャベツ、トマト、にんじん）</option>
+              <option value="果物">果物（りんご、みかん、バナナ）</option>
+              <option value="きのこ類">きのこ類（しいたけ、しめじ、エリンギ）</option>
+            </optgroup>
+            <optgroup label="乳製品・脂質">
+              <option value="乳製品">乳製品（牛乳、チーズ、ヨーグルト）</option>
+              <option value="油脂類">油脂類（バター、サラダ油）</option>
+            </optgroup>
+            <optgroup label="調味料・その他">
+              <option value="調味料">調味料（醤油、塩、砂糖）</option>
+              <option value="菓子類">菓子類（お菓子、デザート）</option>
+              <option value="飲料類">飲料類（お茶、ジュース、コーヒー）</option>
+              <option value="その他">その他（分類に該当しないもの）</option>
+            </optgroup>
+          </select>
+          <button type="submit" class="btn btn-primary">フィルタ</button>
+        </div>
+      </form>
+
+      <h1>食材一覧</h1>
       <table class="table table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th>image<br />画像</th>
-            <th>delete<br />削除ボタン</th>
-            <th>Name<br />(商品名)</th>
-            <th>Pdate<br />(購入日)</th>
-            <th>Edate<br />(賞味期限)</th>
+            <th>画像</th>
+            <th>削除ボタン</th>
+            <th>商品名</th>
+            <th>購入日</th>
+            <th>賞味期限</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +231,13 @@
                 <img th:src="@{/images/{filename}(filename=${ing.getFName()})}" alt="商品画像" style="max-width: 100%; max-height: 150px; width: auto; height: auto;" />
               </a>
             </td>
-            <td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
+            <td>
+              <!-- <button class="icon-btn"> -->
+              <a th:href="@{/delete(id=${ing.getId()})}" class="icon-btn">
+                <i class="fas fa-trash-alt"></i> 削除
+              </a>
+              <!-- </button> -->
+            </td>
             <td th:text="${ing.getPName()}"></td>
             <td th:text="${ing.getPdate()}"></td>
             <td th:text="${ing.getEdate()}"></td>
@@ -83,16 +245,16 @@
         </tbody>
       </table>
 
-      <h1>賞味期限の近い食材一覧</h1>
       <div class="container">
+        <h1>賞味期限の近い食材一覧</h1>
         <table class="table table-bordered">
           <thead class="thead-dark">
             <tr>
-              <th>image<br />画像</th>
-              <th>delete<br />削除ボタン</th>
-              <th>Name<br />(商品名)</th>
-              <th>Pdate<br />(購入日)</th>
-              <th>Edate<br />(賞味期限)</th>
+              <th>画像</th>
+              <th>削除ボタン</th>
+              <th>商品名</th>
+              <th>購入日</th>
+              <th>賞味期限</th>
             </tr>
           </thead>
           <tbody>
@@ -102,7 +264,13 @@
                   <img th:src="@{/images/{filename}(filename=${ing.getFName()})}" alt="商品画像" style="width: 200px; height: auto;" />
                 </a>
               </td>
-              <td><a th:href="@{/delete(id=${ing.getId()})}">削除</a></td>
+              <td>
+                <!-- <button class="icon-btn"> -->
+                <a th:href="@{/delete(id=${ing.getId()})}" class="icon-btn">
+                  <i class="fas fa-trash-alt"></i> 削除
+                </a>
+                <!-- </button> -->
+              </td>
               <td th:text="${ing.getPName()}"></td>
               <td th:text="${ing.getPdate()}"></td>
               <td th:text="${ing.getEdate()}"></td>

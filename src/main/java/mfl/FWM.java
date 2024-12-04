@@ -130,11 +130,11 @@ public class FWM {
     
     //初期データ追加
     public void addInitialIngs() {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-    	
-        addIng(new Ingredient("carrot.jpg", "人参", "人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter), "野菜類"));
-        addIng(new Ingredient("radish.jpg", "大根", "大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter), "野菜類"));
-        addIng(new Ingredient("greenpepper.jpg", "ピーマン", "ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter), "野菜類"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    
+        addIng(new Ingredient("carrot.jpg", "人参", "人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter), "野菜"));
+        addIng(new Ingredient("radish.jpg", "大根", "大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter), "野菜"));
+        addIng(new Ingredient("greenpepper.jpg", "ピーマン", "ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter), "野菜"));
     }
 
     // Ingredient更新
@@ -157,6 +157,7 @@ public class FWM {
     }
 
 
+    
     
     //賞味期限の近い食材を取得
 	public List<Ingredient> getExpiringIngs(int days) {
@@ -190,6 +191,7 @@ public class FWM {
         return ings;
 	}
 
+    //キーワード検索
     public List<Ingredient> searchByKeyword(String keyword) {
         List<Ingredient> ings = new ArrayList<>();
         Matcher matcher = new Matcher(); // Matcher インスタンス作成
@@ -224,12 +226,8 @@ public class FWM {
         return ings;
     }
     
-
-
-/**
- * Matcherクラス
- */
-class Matcher {
+    // Matcherクラス
+    class Matcher {
     StringTokenizer st1;
     StringTokenizer st2;
     Map<String, String> vars;
@@ -313,4 +311,32 @@ class Matcher {
 	        return str1.startsWith("?");
 	}      
 }
+
+    //カテゴリー検索
+    public List<Ingredient> getIngsByCategory(String category) {
+        List<Ingredient> ings = new ArrayList<>();
+        try {
+            Connection conn = Database.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ingredients WHERE category = ?");
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String fname = rs.getString("fname");
+                String pname = rs.getString("pname");
+                String iname = rs.getString("iname");
+                String pdate = rs.getString("pdate");
+                String edate = rs.getString("edate");
+                String cat = rs.getString("category");
+
+                Ingredient ing = new Ingredient(fname, pname, iname, pdate, edate, cat);
+                ing.setId(id);
+                ings.add(ing);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ings;
+    }
+
 }
