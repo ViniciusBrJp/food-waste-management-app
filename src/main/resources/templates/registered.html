@@ -217,7 +217,7 @@ http://www.thymeleaf.org">
                                 <option value="その他" th:selected="${category == 'その他'}">その他（分類に該当しないもの）</option>
                             </optgroup>
                         </select>
-
+                        <input type="text" id="no-category" name="no-category" disabled>
                     </div>
                     <!-- ボタン -->
                     <div class="form-group">
@@ -246,6 +246,12 @@ http://www.thymeleaf.org">
             var expiryDate = document.getElementById('expiry-date');
             var purchaseDate = document.getElementById('purchase-date');
             var category = document.getElementById('category');
+            var noCategory = document.getElementById('no-category');
+            if(!category.value) {
+                category.style.display = "none";
+            } else {
+                noCategory.style.display = "none";
+            }
 
             // 編集ボタンを押す前の値を保持
             var originalValues = {
@@ -256,6 +262,14 @@ http://www.thymeleaf.org">
                 category: category.value
             };
 
+            // 何も入力されていない場合、yyyy/mm/ddの表示を消すため
+            if (!expiryDate.value) {
+                expiryDate.type = "text";
+            }
+            if (!purchaseDate.value) {
+                purchaseDate.type = "text";
+            }
+
             // 編集ボタンのクリックイベント
             editButton.addEventListener("click", function () {
                 formFields.forEach(field => field.disabled = false); // ".form-fields input"の部分を編集可能にする
@@ -263,6 +277,10 @@ http://www.thymeleaf.org">
                 editButton.style.display = "none"; // 編集ボタンを非表示
                 saveButton.style.display = "inline-block"; // 保存ボタンを表示
                 cancelButton.style.display = "inline-block"; // キャンセルボタンを表示
+                expiryDate.type = "date";
+                purchaseDate.type = "date";
+                category.style.display = "inline-block";
+                noCategory.style.display = "none";
             });
 
             // キャンセルボタンのクリックイベント
@@ -277,6 +295,18 @@ http://www.thymeleaf.org">
                 expiryDate.value = originalValues.expiryDate;
                 purchaseDate.value = originalValues.purchaseDate;
                 category.value = originalValues.category;
+                if(!originalValues.expiryDate) {
+                    expiryDate.type = "text";
+                }
+                if(!originalValues.purchaseDate) {
+                    purchaseDate.type = "text";
+                }
+                if(!originalValues.category) {
+                    category.style.display = "none";
+                    noCategory.style.display = "inline-block";
+                } else {
+                    noCategory.style.display = "none";
+                }
             });
 
             function checkInput() {
