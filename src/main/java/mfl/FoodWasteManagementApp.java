@@ -236,6 +236,7 @@ public class FoodWasteManagementApp {
             String category = ctx.queryParam("category"); // 選択されたカテゴリを取得
             List<Ingredient> filteredIngs = fwm.getIngsByCategory(category); // カテゴリでフィルタリング
             Map<String, Object> model = new HashMap<>();
+            model.put("selectedCategory", category);
             model.put("filteredIngs", filteredIngs);
             ctx.render("/filtered.html", model); // 新しいページへデータを渡す
         });
