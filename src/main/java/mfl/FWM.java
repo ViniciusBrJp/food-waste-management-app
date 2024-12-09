@@ -132,9 +132,13 @@ public class FWM {
     public void addInitialIngs() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     
+        // addIng(new Ingredient("carrot.jpg", "人参", "人参", LocalDate.now().plusDays(0).format(formatter)=購入日, LocalDate.now().plusDays(5).format(formatter)=賞味期限, "野菜"));
         addIng(new Ingredient("carrot.jpg", "人参", "人参", LocalDate.now().plusDays(0).format(formatter), LocalDate.now().plusDays(5).format(formatter), "野菜"));
         addIng(new Ingredient("radish.jpg", "大根", "大根", LocalDate.now().plusDays(-2).format(formatter), LocalDate.now().plusDays(3).format(formatter), "野菜"));
         addIng(new Ingredient("greenpepper.jpg", "ピーマン", "ピーマン", LocalDate.now().plusDays(-3).format(formatter), LocalDate.now().plusDays(2).format(formatter), "野菜"));
+        addIng(new Ingredient("yogurt.png", "明治ブルガリアヨーグルト", "ヨーグルト", LocalDate.now().plusDays(-6).format(formatter), LocalDate.now().plusDays(1).format(formatter), "乳製品"));
+        addIng(new Ingredient("beef.jpg", "飛騨牛", "牛肉", LocalDate.now().plusDays(-20).format(formatter), LocalDate.now().plusDays(40).format(formatter), "肉類"));
+        addIng(new Ingredient("barleyTea.png", "天然ミネラル麦茶", "お茶", LocalDate.now().plusDays(-6).format(formatter), LocalDate.now().plusDays(14).format(formatter), "飲料類"));
     }
 
     // Ingredient更新
